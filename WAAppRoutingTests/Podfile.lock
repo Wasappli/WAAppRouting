@@ -1,0 +1,17 @@
+PODS:
+  - Kiwi (2.4.0)
+  - WAAppRouting (0.0.1)
+
+DEPENDENCIES:
+  - Kiwi
+  - WAAppRouting (from `../WAAppRouting.podspec`)
+
+EXTERNAL SOURCES:
+  WAAppRouting:
+    :path: "../WAAppRouting.podspec"
+
+SPEC CHECKSUMS:
+  Kiwi: f49c9d54b28917df5928fe44968a39ed198cb8a8
+  WAAppRouting: 895faff3c4f586a95413beaddca28b3ded8af2bb
+
+COCOAPODS: 0.38.0

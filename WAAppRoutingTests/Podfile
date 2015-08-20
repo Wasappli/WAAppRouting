@@ -1,0 +1,6 @@
+pod 'WAAppRouting', :path => '../WAAppRouting.podspec'
+
+# Add Kiwi as an exclusive dependency for the WAAppRoutingTestsTests target
+target :WAAppRoutingTestsTests, :exclusive => true do
+   pod 'Kiwi'   
+end

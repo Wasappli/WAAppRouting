@@ -1,0 +1,5 @@
+pod 'PureLayout'
+pod 'RZNotificationView'
+pod 'PPRevealSideViewController'
+
+pod 'WAAppRouting', :path => '../WAAppRouting.podspec'

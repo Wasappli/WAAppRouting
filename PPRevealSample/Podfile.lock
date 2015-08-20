@@ -1,0 +1,30 @@
+PODS:
+  - MOOMaskedIconView (0.1.0)
+  - PPHelpMe (1.0.2)
+  - PPRevealSideViewController (1.2.1):
+    - PPHelpMe
+  - PureLayout (3.0.0)
+  - RZNotificationView (1.1.7):
+    - MOOMaskedIconView (>= 0.1.0)
+    - PPHelpMe (>= 1.0.0)
+  - WAAppRouting (0.0.1)
+
+DEPENDENCIES:
+  - PPRevealSideViewController
+  - PureLayout
+  - RZNotificationView
+  - WAAppRouting (from `../WAAppRouting.podspec`)
+
+EXTERNAL SOURCES:
+  WAAppRouting:
+    :path: "../WAAppRouting.podspec"
+
+SPEC CHECKSUMS:
+  MOOMaskedIconView: 42f22374cd15e81e65a1d67963374a961d94b909
+  PPHelpMe: 243c40d2fad33ebdcc6b158c0db54893e0cc2d14
+  PPRevealSideViewController: f8ed60bc4daf09c4b1e233c52df0957900667f41
+  PureLayout: 270dfee2236f697ab1d5e2771c2e5c248495fa0d
+  RZNotificationView: 37b4a32e03a5f44a91ea76465f33313943a874d8
+  WAAppRouting: 895faff3c4f586a95413beaddca28b3ded8af2bb
+
+COCOAPODS: 0.38.0
