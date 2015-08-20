@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = "WAAppRouting"
   s.version      = "0.0.1"
-  s.summary      = "WAAppRouting is a library to help you dealing with routing on your app by handling controllers. The key point is that WAAppRouting handles a stack of controllers!"
+  s.summary      = "WAAppRouting is a library to help you dealing with routing on your app by controllers. As a key point, it handles a stack of controllers!"
 
   s.description  = <<-DESC
                    So what is this library useful for? Good question. Let's answer by asking an other question. Have you been struggled at some point by the following issues? :
