@@ -54,6 +54,23 @@ So you might recognize some concept of the two libraries especially in the route
 ## Installation
 Use Cocoapods, this is the easiest way to install the router.
 
+If you want to link `WAAppRouting` into an iOS app extension (or a shared framework that is linked to an app extension), you'll need to ensure that the `WA_APP_EXTENSION` flag is set when you compile the framework.  To do so using Cocoapods, add this to your `Podfile`:
+
+```ruby
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    if target.name =~ /WAAppRouting/
+      target.build_configurations.each do |config|
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= []
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'WA_APP_EXTENSION=1'
+      end
+    end
+  end
+end
+```
+
+Older versions of cocoapods may require you to use `installer.project` instead of `installer.pods_project`, so if you get an error complaining that `pods_project` does not exist, update your cocoapods gem.
+
 Then, well import `#import <WAAppRouting/WAAppRouting.h>` and you are good to go.
 
 You also need to configure a URL scheme (I won't get back to this, there is plenty of documentation out there)
