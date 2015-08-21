@@ -1,3 +1,9 @@
+# [![WAAppRouting](https://github.com/Wasappli/WAAppRouting/blob/master/images/WAAppRouting.png?raw=true)](#)
+
+[![Version](https://img.shields.io/cocoapods/v/WAAppRouting.svg?style=flat)](http://cocoapods.org/pods/WAAppRouting)
+[![License](https://img.shields.io/cocoapods/l/WAAppRouting.svg?style=flat)](http://cocoapods.org/pods/WAAppRouting)
+[![Platform](https://img.shields.io/cocoapods/p/WAAppRouting.svg?style=flat)](http://cocoapods.org/pods/WAAppRouting)
+
 **Developed and Maintained by [Ipodishima](https://github.com/ipodishima) Founder & CTO at [Wasappli Inc](http://wasapp.li).**
 
 So what is this library useful for? Good question. Let's answer by asking an other question. Have you been struggled at some point by the following issues?
@@ -178,8 +184,8 @@ You can ask not to handle some routes on runtime by setting this block (for exam
     }];
 ```
 
-## Joker URL
-You can have some joker urls like `list/*/extra` meaning that for any value instead of the `*`, the entity or the block would be executed. Avoid using it with entities but rather with block.
+## Wildcard URL
+You can have some wildcard urls like `list/*/extra` meaning that for any value instead of the `*`, the entity or the block would be executed. Avoid using it with entities but rather with block.
 An url in form of `list/*` will match both `list/path` and `list/path/extra`
 
 Here is an example of an alert triggered each time we are after `list/`
