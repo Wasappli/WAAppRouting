@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "WAAppRouting"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.summary      = "WAAppRouting is a library to help you dealing with routing on your app by controllers. As a key point, it handles a stack of controllers!"
 
   s.description  = <<-DESC
@@ -20,7 +20,7 @@ All this points are answered by `WAAppRouting` (and more)
   s.license      = { :type => "MIT", :file => "LICENSE" }
   s.author       = { "Marian Paul" => "marian@wasapp.li" }
   s.platform     = :ios, "7.0"
-  s.source       = { :git => "https://github.com/Wasappli/WAAppRouting.git", :tag => "0.0.1" }
+  s.source       = { :git => "https://github.com/Wasappli/WAAppRouting.git", :tag => "0.0.2" }
   s.source_files  = "Files/*.{h,m}"
   s.requires_arc = true
 end
