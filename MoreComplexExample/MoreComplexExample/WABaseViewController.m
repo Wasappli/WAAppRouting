@@ -15,13 +15,8 @@
     self.view.backgroundColor = [UIColor whiteColor];
 }
 
-- (void)reloadFromAppLink {
+- (void)reloadFromAppLinkRefresh {
     
-}
-
-- (void)configureWithAppLink:(WAAppLink *)appLink defaultParameters:(id<WAAppRouterParametersProtocol>)defaultParameters allowedParameters:(NSArray *)allowedParameters {
-    self->_appLink = appLink;
-    [self reloadFromAppLink];
 }
 
 @end

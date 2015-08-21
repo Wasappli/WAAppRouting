@@ -27,12 +27,13 @@
 
 - (void)reloadData {
     if (self.isViewLoaded) {
-        self.label.text = [NSString stringWithFormat:@"%@\n\nRouteParameters: %@\n\nQueryParameters:%@", self.appLink.URL, self.appLink.routeParameters, self.appLink.queryParameters];
+        self.label.text = [NSString stringWithFormat:@"%@\n\nRouteParameters: %@\n\nQueryParameters:%@\nAllParameters: %@", self.appLink.URL, self.appLink.routeParameters, self.appLink.queryParameters, self.appLinkRoutingParameters];
     }
 }
 
-- (void)reloadFromAppLink {
-    [super reloadFromAppLink];
+
+- (void)reloadFromAppLinkRefresh {
+    [super reloadFromAppLinkRefresh];
     
     [self reloadData];
 }

@@ -68,7 +68,7 @@ static NSString *CellIdentifier = @"CellIdentifier";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    ArticleAppLinkParameters *params = [self.routingParameters copy];
+    ArticleAppLinkParameters *params = [(ArticleAppLinkParameters *)self.appLinkRoutingParameters copy];
     params.articleTitle = [NSString stringWithFormat:@"My super article %ld", (long)indexPath.row];
         
     [(AppDelegate *)[[UIApplication sharedApplication] delegate] goTo:@"simpleexampleparameters://list/%ld?%@", (long)indexPath.row, [params articleDetailQuery]];

@@ -7,6 +7,7 @@
 //
 
 #import "WABaseViewController.h"
+#import "ArticleAppLinkParameters.h"
 
 @interface WABaseViewController ()
 @property (nonatomic, strong) ArticleAppLinkParameters *routingParameters;
@@ -19,29 +20,12 @@
     self.view.backgroundColor = [UIColor whiteColor];
 }
 
-- (void)reloadFromAppLink {
-    
++ (Class<WAAppRouterParametersProtocol>)appLinkParametersClass {
+    return [ArticleAppLinkParameters class];
 }
 
-- (void)configureWithAppLink:(WAAppLink *)appLink defaultParameters:(id<WAAppRouterParametersProtocol>)defaultParameters allowedParameters:(NSArray *)allowedParameters {
-
-    // Grab the parameters from the link
-    NSMutableDictionary *rawParameters = [NSMutableDictionary dictionaryWithDictionary:appLink.queryParameters];
-    if (appLink.routeParameters) {
-        [rawParameters setValuesForKeysWithDictionary:appLink.routeParameters];
-    }
-
-    // Erase all previous params and allocate with allowed parameters provided by the entity
-    self.routingParameters = [[ArticleAppLinkParameters alloc] initWithAllowedParameters:allowedParameters];
+- (void)reloadFromAppLinkRefresh {
     
-    // Merge with the default parameters provided by the entity
-    [self.routingParameters mergeWithAppRouterParameters:defaultParameters];
-    
-    // No set the values from the query itself
-    [self.routingParameters mergeWithRawParameters:rawParameters];
-    
-    // Call reload which is a random method defined for our purpose. This method should be implemented by your subclasses to reload data accordingly
-    [self reloadFromAppLink];
 }
 
 @end

@@ -52,7 +52,13 @@
                                                            targetControllerClass:[WAListDetailViewController class]
                                                             presentingController:navigationController
                                                         prefersModalPresentation:NO
-                                                        defaultParametersBuilder:nil
+                                                        defaultParametersBuilder:^id<WAAppRouterParametersProtocol> {
+                                                            
+                                                            NSMutableDictionary *defaultParameters = [NSMutableDictionary new];
+                                                            defaultParameters[@"defaultParam"]  = @1;
+                                                            defaultParameters[@"defaultParam2"] = @"Default parameter 2";
+                                                            return defaultParameters;
+                                                        }
                                                                allowedParameters:nil];
     
     WAAppRouteEntity *list1DetailExtraEntity = [[WAAppRouteEntity alloc] initWithName:@"listDetailExtra"

@@ -14,9 +14,6 @@
 
 @interface WABaseViewController : UIViewController <WAAppRouterTargetControllerProtocol>
 
-@property (nonatomic, strong, readonly) ArticleAppLinkParameters *routingParameters;
 @property (nonatomic, strong) id commonObject;
-
-- (void)reloadFromAppLink;
 
 @end

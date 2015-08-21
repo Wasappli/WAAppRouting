@@ -9,13 +9,14 @@
 @import Foundation;
 #import "WAAppRouterParametersProtocol.h"
 
-@class WAAppLink;
-
 /**
  *  @brief All controllers used with the route handler should conforms to this protocol in order to get configured with the app link
  */
 @protocol WAAppRouterTargetControllerProtocol <NSObject>
 
-- (void)configureWithAppLink:(WAAppLink *)appLink defaultParameters:(id <WAAppRouterParametersProtocol>)defaultParameters allowedParameters:(NSArray *)allowedParameters;
+- (void)reloadFromAppLinkRefresh;
+
+@optional
++ (Class <WAAppRouterParametersProtocol>)appLinkParametersClass;
 
 @end

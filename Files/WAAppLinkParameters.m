@@ -70,6 +70,10 @@
     return self;
 }
 
++ (instancetype)newWithAllowedParameters:(NSArray *)allowedParameters {
+    return [[self alloc] initWithAllowedParameters:allowedParameters];
+}
+
 #pragma mark - Mapping
 
 - (void)mergeWithAppRouterParameters:(id<WAAppRouterParametersProtocol>)parameters {

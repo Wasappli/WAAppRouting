@@ -7,6 +7,7 @@
 //
 
 #import "UITabBarController+WAAppRoutingContainerPresentationProtocol.h"
+#import "WAAppRoutingContainerPresentationProtocol.h"
 
 @implementation UITabBarController (WAAppRoutingContainerPresentationProtocol)
 

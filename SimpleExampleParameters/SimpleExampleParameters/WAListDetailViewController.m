@@ -35,7 +35,7 @@
 }
 
 - (void)goNext {
-    [(AppDelegate *)[[UIApplication sharedApplication] delegate] goTo:@"simpleexampleparameters://list/%@/extra?%@", self.routingParameters.articleID, [self.routingParameters articleDetailQuery]];
+    [(AppDelegate *)[[UIApplication sharedApplication] delegate] goTo:@"simpleexampleparameters://list/%@/extra?%@", [(ArticleAppLinkParameters *)self.appLinkRoutingParameters articleID], [(ArticleAppLinkParameters *)self.appLinkRoutingParameters articleDetailQuery]];
 }
 
 @end

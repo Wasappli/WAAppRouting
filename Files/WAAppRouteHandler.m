@@ -9,7 +9,6 @@
 #import "WAAppRouteHandler.h"
 #import "WAAppMacros.h"
 
-#import "WAAppRouterTargetControllerProtocol.h"
 #import "WAAppRoutingContainerPresentationProtocol.h"
 
 #import "WAAppRouteEntity.h"
@@ -17,6 +16,7 @@
 #import "WAAppLink.h"
 
 #import "UINavigationController+WAAdditions.h"
+#import "UIViewController+WAAppLinkParameters.h"
 
 @interface WAAppRouteHandler ()
 
@@ -212,7 +212,7 @@
 #pragma mark - Present or reload
 
 // Configure the controller with the app link
-- (void) configureController:(UIViewController <WAAppRouterTargetControllerProtocol>*)controller fromEntity:(WAAppRouteEntity *)entity appLink:(WAAppLink *)appLink {
+- (void) configureController:(UIViewController *)controller fromEntity:(WAAppRouteEntity *)entity appLink:(WAAppLink *)appLink {
     // Get the default parameters
     id <WAAppRouterParametersProtocol> defaultParameters = entity.defaultParametersBuilder ? entity.defaultParametersBuilder() : nil;
     WAAppRouterParameterAssert(defaultParameters && [defaultParameters conformsToProtocol:@protocol(WAAppRouterParametersProtocol)] || !defaultParameters);
@@ -229,10 +229,10 @@
                    allowedParameters:entity.allowedParameters];
 }
 
-- (UIViewController <WAAppRouterTargetControllerProtocol> *) presentEntity:(WAAppRouteEntity *)entity withAppLink:(WAAppLink *)appLink animated:(BOOL)animated {
+- (UIViewController *) presentEntity:(WAAppRouteEntity *)entity withAppLink:(WAAppLink *)appLink animated:(BOOL)animated {
     
     // First, present the controller
-    UIViewController <WAAppRouterTargetControllerProtocol> *targetViewController =
+    UIViewController *targetViewController =
     [self presentTargetViewControllerClass:entity.targetControllerClass
       inNavigationControllerViewController:[self navigationControllerControllerForEntity:entity]
                    preferModalPresentation:entity.preferModalPresentation
@@ -246,10 +246,10 @@
     return targetViewController;
 }
 
-- (UIViewController <WAAppRouterTargetControllerProtocol> *) reloadEntity:(WAAppRouteEntity *)entity withAppLink:(WAAppLink *)appLink {
+- (UIViewController *) reloadEntity:(WAAppRouteEntity *)entity withAppLink:(WAAppLink *)appLink {
     
     // Retrieve the target controller in the navigation controller
-    UIViewController <WAAppRouterTargetControllerProtocol> *targetViewController =
+    UIViewController *targetViewController =
     [self viewControllerForClass:entity.targetControllerClass
           inNavigationController:[self navigationControllerControllerForEntity:entity]];
     
@@ -269,12 +269,12 @@
 #pragma mark - View controller management
 
 // Present the controller and deal with where it should be
-- (UIViewController <WAAppRouterTargetControllerProtocol> *)presentTargetViewControllerClass:(Class)targetViewControllerClass
-                                                        inNavigationControllerViewController:(UINavigationController *)navigationController
-                                                                     preferModalPresentation:(BOOL)preferModalPresentation
-                                                                                    animated:(BOOL)animated {
+- (UIViewController *)presentTargetViewControllerClass:(Class)targetViewControllerClass
+                  inNavigationControllerViewController:(UINavigationController *)navigationController
+                               preferModalPresentation:(BOOL)preferModalPresentation
+                                              animated:(BOOL)animated {
     
-    UIViewController <WAAppRouterTargetControllerProtocol> *controllerToReturn = nil;
+    UIViewController *controllerToReturn = nil;
     
     // First: is it shown as modal?
     if (preferModalPresentation) {
@@ -303,38 +303,35 @@
         controllerToReturn = [[targetViewControllerClass alloc] init];
     }
     
-    WAAppRouterProtocolAssertion(controllerToReturn, WAAppRouterTargetControllerProtocol);
     return controllerToReturn;
 }
 
-- (UIViewController <WAAppRouterTargetControllerProtocol> *)placeTargetViewControllerClass:(Class)targetViewControllerClass
-                                                                    inNavigationController:(UINavigationController *)navigationController
-                                                                                  animated:(BOOL)animated {
+- (UIViewController *)placeTargetViewControllerClass:(Class)targetViewControllerClass
+                              inNavigationController:(UINavigationController *)navigationController
+                                            animated:(BOOL)animated {
     
     // Try to find it in the current stack
-    UIViewController <WAAppRouterTargetControllerProtocol> *controllerToReturn = (UIViewController <WAAppRouterTargetControllerProtocol> *)[navigationController waapp_popToFirstControllerOfClass:targetViewControllerClass animated:animated];
+    UIViewController *controllerToReturn = (UIViewController *)[navigationController waapp_popToFirstControllerOfClass:targetViewControllerClass animated:animated];
     // Not found? Then allocate it
     if (!controllerToReturn) {
         controllerToReturn = [[targetViewControllerClass alloc] init];
         [navigationController pushViewController:controllerToReturn animated:animated];
     }
     
-    WAAppRouterProtocolAssertion(controllerToReturn, WAAppRouterTargetControllerProtocol);
     return controllerToReturn;
 }
 
-- (UIViewController <WAAppRouterTargetControllerProtocol> *)viewControllerForClass:(Class)controllerClass inNavigationController:(UINavigationController *)navigationController {
-    UIViewController <WAAppRouterTargetControllerProtocol> *controllerFound = nil;
+- (UIViewController *)viewControllerForClass:(Class)controllerClass inNavigationController:(UINavigationController *)navigationController {
+    UIViewController *controllerFound = nil;
     if ([navigationController isKindOfClass:[UINavigationController class]]) {
         for (UIViewController *controller in ((UINavigationController *)navigationController).viewControllers) {
             if ([controller isKindOfClass:controllerClass]) {
-                controllerFound = (UIViewController <WAAppRouterTargetControllerProtocol> *)controller;
+                controllerFound = controller;
                 break;
             }
         }
     }
     
-    WAAppRouterProtocolAssertion(controllerFound, WAAppRouterTargetControllerProtocol);
     return controllerFound;
 }
 

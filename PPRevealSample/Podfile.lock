@@ -25,6 +25,6 @@ SPEC CHECKSUMS:
   PPRevealSideViewController: f8ed60bc4daf09c4b1e233c52df0957900667f41
   PureLayout: 270dfee2236f697ab1d5e2771c2e5c248495fa0d
   RZNotificationView: 37b4a32e03a5f44a91ea76465f33313943a874d8
-  WAAppRouting: 895faff3c4f586a95413beaddca28b3ded8af2bb
+  WAAppRouting: 2a6fb09b307659b64029d23ebf8e87d0e5873cf5
 
 COCOAPODS: 0.38.0
