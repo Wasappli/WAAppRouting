@@ -31,7 +31,7 @@
     UINavigationController *navigationController = [[UINavigationController alloc] init];
     
     // Create the default router
-    self.router = [WAAppRouter defaultRouter];
+    self.router = [WAAppRouter defaultRouterWithRootViewController:navigationController];
     
 // Create the entities
 WAAppRouteEntity *list1Entity = [WAAppRouteEntity routeEntityWithName:@"list"

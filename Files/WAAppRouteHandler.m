@@ -21,6 +21,7 @@
 @interface WAAppRouteHandler ()
 
 @property (nonatomic, strong) WAAppRouteRegistrar *registrar;
+@property (nonatomic, strong) UIViewController *rootViewController;
 
 @end
 
@@ -28,19 +29,20 @@
 @synthesize shouldHandleAppLinkBlock        = _shouldHandleAppLinkBlock;
 @synthesize controllerPreConfigurationBlock = _controllerPreConfigurationBlock;
 
-- (instancetype)initWithRouteRegistrar:(WAAppRouteRegistrar *)registrar {
+- (instancetype)initWithRouteRegistrar:(WAAppRouteRegistrar *)registrar rootViewController:(UIViewController *)rootViewController {
     WAAppRouterClassAssertion(registrar, WAAppRouteRegistrar);
     self = [super init];
     
     if (self) {
         self->_registrar = registrar;
+        self->_rootViewController = rootViewController;
     }
     
     return self;
 }
 
-+ (instancetype)routeHandlerWithRouteRegistrar:(WAAppRouteRegistrar *)registrar {
-    return [[self alloc] initWithRouteRegistrar:registrar];
++ (instancetype)routeHandlerWithRouteRegistrar:(WAAppRouteRegistrar *)registrar rootViewController:(UIViewController *)rootViewController {
+    return [[self alloc] initWithRouteRegistrar:registrar rootViewController:rootViewController];
 }
 
 - (BOOL)handleURL:(NSURL *)url withRouteEntity:(WAAppRouteEntity *)routeEntity appLink:(WAAppLink *)appLink {
@@ -290,7 +292,7 @@
         // Get the controller which will act as the presentation controller
         UIViewController *presentingViewController = navigationController;
         if (!presentingViewController) {
-            presentingViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+            presentingViewController = self.rootViewController;
         }
         // Present
         [presentingViewController presentViewController:navController animated:animated completion:NULL];

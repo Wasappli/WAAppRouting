@@ -15,6 +15,6 @@
  *
  *  @return a fresh router which life is dedicated to help you
  */
-+ (instancetype) defaultRouter;
++ (instancetype) defaultRouterWithRootViewController:(UIViewController *)rootViewController;
 
 @end
