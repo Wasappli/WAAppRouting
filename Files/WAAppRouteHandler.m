@@ -272,6 +272,14 @@
 
 #pragma mark - View controller management
 
+- (UIViewController *)rootViewController {
+#ifndef WA_APP_EXTENSION
+  return [[[UIApplication sharedApplication] keyWindow] rootViewController];
+#endif
+  
+  return nil;
+}
+
 // Present the controller and deal with where it should be
 - (UIViewController *)presentTargetViewControllerClass:(Class)targetViewControllerClass
                   inNavigationControllerViewController:(UINavigationController *)navigationController
@@ -290,7 +298,7 @@
         // Get the controller which will act as the presentation controller
         UIViewController *presentingViewController = navigationController;
         if (!presentingViewController) {
-            presentingViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+          presentingViewController = [self rootViewController];
         }
         // Present
         [presentingViewController presentViewController:navController animated:animated completion:NULL];
