@@ -1,4 +1,4 @@
 language: objective-c
 xcode_workspace: WAAppRoutingTests/WAAppRoutingTests.xcworkspace
-xcode_scheme: WAAppRoutingTestsTests
+xcode_scheme: WAAppRoutingTests
 podfile: WAAppRoutingTests/Podfile
