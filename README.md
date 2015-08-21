@@ -62,14 +62,14 @@ WAAppRouteMatcher *routeMatcher = [[WAAppRouteMatcher alloc] init];
 
 Then, you need to create the registrar which will act as a container for all the entities / paths pairs
 
-```
+```objc
 // Create the Registrar
 WAAppRouteRegistrar *registrar = [[WAAppRouteRegistrar alloc] initWithRouteMatcher:routeMatcher];
 ```
 
 This is now the time to create some entities
 
-```
+```objc
 // Create the entities
 WAAppRouteEntity *list1Entity = [[WAAppRouteEntity alloc] initWithName:@"list"
                                                                   path:@"list"
@@ -92,7 +92,7 @@ WAAppRouteEntity *list1DetailEntity = [[WAAppRouteEntity alloc] initWithName:@"l
 
 Add the entities to the registrar
 
-```
+```objc
 // Register the entities
 [registrar registerAppRouteEntity:list1Entity];
 [registrar registerAppRouteEntity:list1DetailEntity];
@@ -100,7 +100,7 @@ Add the entities to the registrar
 
 Add some block handler if needed
 
-```
+```objc
 // Register some blocks
 [registrar registerBlockRouteHandler:^(WAAppLink *appLink) {
     // Do something every time we are in list/something
@@ -116,7 +116,7 @@ WAAppRouteHandler *routeHandler = [[WAAppRouteHandler alloc] initWithRouteRegist
 ```
 
 Finally, create the router
-```
+```objc
 // Create the router
 self.router = [[WAAppRouter alloc] initWithRegistrar:registrar
                                         routeHandler:routeHandler];
@@ -124,19 +124,19 @@ self.router = [[WAAppRouter alloc] initWithRegistrar:registrar
 
 And set the navigation controller as the root controller
 
-```
+```objc
 self.window.rootViewController = navigationController;
 ```
 
 You can now use it and open the app with 
 
-```
+```objc
 [self application:(UIApplication *)self openURL:[NSURL URLWithString:@"appscheme://list"] sourceApplication:nil annotation:nil];
 ```
 
 Do not forget to use the router!
 
-```
+```objc
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     return [self.router handleURL:url];
 }
@@ -159,7 +159,7 @@ You might want to pass some values to the controllers when there are allocated.
 For example in a project I'm involved to, we have an image cache the controllers needs to display the image. This image cache is allocated by the App delegate (to avoid singletons and get more testable code).
 For doing this, you need to add a block implementation to the route handler
 
-```
+```objc
     [routeHandler setControllerPreConfigurationBlock:^(UIViewController *controller, WAAppRouteEntity *routeEntity, WAAppLink *appLink) {
         if ([controller isKindOfClass:[WABaseViewController class]]) {
             ((WABaseViewController *)controller).imageCache = imageCache;
@@ -170,7 +170,7 @@ For doing this, you need to add a block implementation to the route handler
 ## Forbid specific entities to be shown
 You can ask not to handle some routes on runtime by setting this block (for example you might not want to display some controllers if not logged in)
 
-```
+```objc
     [routeHandler setShouldHandleAppLinkBlock:^BOOL(WAAppRouteEntity *entity) {
         // Could return NO if not logged in for example
         return YES;
@@ -183,7 +183,7 @@ An url in form of `list/*` will match both `list/path` and `list/path/extra`
 
 Here is an example of an alert triggered each time we are after `list/`
 
-```
+```objc
 [registrar registerBlockRouteHandler:^(WAAppLink *appLink) {
         [RZNotificationView showNotificationOn:RZNotificationContextAboveStatusBar
                                        message:[NSString stringWithFormat:@"You are dealing with item ID %@", appLink[@"articleID"]]
@@ -223,7 +223,7 @@ Let's have a look to an example you can find on `SimpleExampleParameters` sample
 ### Example
 First, create a subclass
 
-```
+```objc
 @interface ArticleAppLinkParameters : WAAppLinkParameters
 
 @property (nonatomic, strong) NSNumber *articleID;
@@ -236,7 +236,7 @@ First, create a subclass
 You can see here three objects which should be mapped to the url keys
 You need to override the `mappingKeyProperty` getter
 
-```
+```objc
 - (NSDictionary *)mappingKeyProperty {
     return @{
              @"articleID": @"articleID",
@@ -250,7 +250,7 @@ Next step is to go to your base view controller (if you not yet one it is a good
 
 Here is the default implementation idea you can reproduce in your app
 
-```
+```objc
 - (void)configureWithAppLink:(WAAppLink *)appLink defaultParameters:(id<WAAppRouterParametersProtocol>)defaultParameters allowedParameters:(NSArray *)allowedParameters {
 
     // Grab the parameters from the link
@@ -275,20 +275,20 @@ Here is the default implementation idea you can reproduce in your app
 
 You can now get the value directly
 
-```
+```objc
 self.label.text = [NSString stringWithFormat:@"ArticleID: %@", self.routingParameters.articleID];`
 ```
 
 You can copy the parameters, set values for a future use
 
-```
+```objc
 ArticleAppLinkParameters *params = [self.routingParameters copy];
 params.articleTitle = [NSString stringWithFormat:@"My super article %ld", (long)indexPath.row];
 ```
 
 Grab the query with a white list
 
-```
+```objc
 NSString *query = [params queryStringWithWhiteList:@[@"articleID", @"articleTitle", @"displayType"];
 ```
 
