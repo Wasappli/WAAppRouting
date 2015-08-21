@@ -39,6 +39,10 @@
     return self;
 }
 
++ (instancetype)routeHandlerWithRouteRegistrar:(WAAppRouteRegistrar *)registrar {
+    return [[self alloc] initWithRouteRegistrar:registrar];
+}
+
 - (BOOL)handleURL:(NSURL *)url withRouteEntity:(WAAppRouteEntity *)routeEntity appLink:(WAAppLink *)appLink {
     WAAppRouterClassAssertion(url, NSURL);
     WAAppRouterClassAssertion(routeEntity, WAAppRouteEntity);

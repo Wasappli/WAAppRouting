@@ -11,3 +11,4 @@
 
 #import "NSMutableDictionary+WAAppRoutingParameters.h"
 #import "UIViewController+WAAppLinkParameters.h"
+#import "WAAppRouter+WADefaultRouter.h"

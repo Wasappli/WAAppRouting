@@ -28,6 +28,11 @@ typedef void (^WAAppRouteHandlerBlock)(WAAppLink *appLink);
 - (instancetype)initWithRouteMatcher:(id <WAAppRouteMatcherProtocol>)routeMatcher NS_DESIGNATED_INITIALIZER;
 
 /**
+ *  @see `initWithRouteMatcher:`
+ */
++ (instancetype)registrarWithRouteMatcher:(id <WAAppRouteMatcherProtocol>)routeMatcher;
+
+/**
  *  Register a new route entity
  *
  *  @param entity the entity to register

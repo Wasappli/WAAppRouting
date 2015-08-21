@@ -33,8 +33,8 @@ typedef id <WAAppRouterParametersProtocol> (^WAAppRouterDefaultParametersBuilder
  *  @param targetControllerClass    the target controller class means the controller class you will use to display the path
  *  @param presentingController     the presenting controller to use. Might not be nil except for the modal and will frequently be a `UINavigationController`. Also see special considerations in README for custom container use
  *  @param prefersModalPresentation set `YES` if you want this to be triggered as a modal
- *  @param defaultParametersBuilder a block to pass some default parameters (only works with `WAAppLinkParameters` subclass or any class which implements `WAAppRouterParametersProtocol`)
- *  @param allowedParameters        a list of allowed parameters (only works with `WAAppLinkParameters` subclass or any class which implements `WAAppRouterParametersProtocol`). The values are supposed to be the subclass properties name
+ *  @param defaultParametersBuilder a block to pass some default parameters
+ *  @param allowedParameters        a list of allowed parameters (only works with `WAAppLinkParameters` subclass or any class which implements `WAAppRouterParametersProtocol` where you can control this. Does not work with `NSMutableDictionary` category provided). The values are supposed to be the subclass properties name
  *
  *  @return an entity to feed the router
  */
@@ -47,6 +47,18 @@ typedef id <WAAppRouterParametersProtocol> (^WAAppRouterDefaultParametersBuilder
     prefersModalPresentation:(BOOL)prefersModalPresentation
     defaultParametersBuilder:(WAAppRouterDefaultParametersBuilderBlock)defaultParametersBuilder
            allowedParameters:(NSArray *)allowedParameters;
+
+/**
+ * @see `initWithName:path:sourceControllerClass:targetControllerClass:presentingController:prefersModalPresentation:defaultParametersBuilder:allowedParameters:`
+ */
++ (instancetype)routeEntityWithName:(NSString *)name
+                               path:(NSString *)path
+              sourceControllerClass:(Class)sourceControllerClass
+              targetControllerClass:(Class)targetControllerClass
+               presentingController:(UIViewController *)presentingController
+           prefersModalPresentation:(BOOL)prefersModalPresentation
+           defaultParametersBuilder:(WAAppRouterDefaultParametersBuilderBlock)defaultParametersBuilder
+                  allowedParameters:(NSArray *)allowedParameters;
 
 @property (nonatomic, strong, readonly) NSString         *name;
 @property (nonatomic, strong, readonly) NSString         *path;

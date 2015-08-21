@@ -24,6 +24,11 @@
  */
 - (instancetype)initWithRouteRegistrar:(WAAppRouteRegistrar *)registrar NS_DESIGNATED_INITIALIZER;
 
+/**
+ * @see `initWithRouteRegistrar:`
+ */
++ (instancetype)routeHandlerWithRouteRegistrar:(WAAppRouteRegistrar *)registrar;
+
 @property (nonatomic, strong, readonly) WAAppRouteRegistrar *registrar;
 
 @end

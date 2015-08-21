@@ -16,7 +16,8 @@
 }
 
 - (void)reloadFromAppLinkRefresh {
-    
+    // You can do something with self.appLink
+    // But more important: with self.appLinkRoutingParameters which has merged route|query|default parameters
 }
 
 @end

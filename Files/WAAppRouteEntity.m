@@ -40,6 +40,18 @@
     return self;
     
 }
+
++ (instancetype)routeEntityWithName:(NSString *)name path:(NSString *)path sourceControllerClass:(Class)sourceControllerClass targetControllerClass:(Class)targetControllerClass presentingController:(UIViewController *)presentingController prefersModalPresentation:(BOOL)prefersModalPresentation defaultParametersBuilder:(WAAppRouterDefaultParametersBuilderBlock)defaultParametersBuilder allowedParameters:(NSArray *)allowedParameters {
+    return [[self alloc] initWithName:name
+                                 path:path
+                sourceControllerClass:sourceControllerClass
+                targetControllerClass:targetControllerClass
+                 presentingController:presentingController
+             prefersModalPresentation:prefersModalPresentation
+             defaultParametersBuilder:defaultParametersBuilder
+                    allowedParameters:allowedParameters];
+}
+
 - (NSString *)description {
     return [NSString stringWithFormat:
             @"WAAppRouteEntity description:%@\n"

@@ -31,51 +31,48 @@
     
     UINavigationController *navigationController = [[UINavigationController alloc] init];
     
-    // Allocate the default route matcher
-    WAAppRouteMatcher *routeMatcher = [[WAAppRouteMatcher alloc] init];
-    
-    // Create the Registrar
-    WAAppRouteRegistrar *registrar = [[WAAppRouteRegistrar alloc] initWithRouteMatcher:routeMatcher];
+    // Create the default router
+    self.router = [WAAppRouter defaultRouter];
     
     // Create the entities
-    WAAppRouteEntity *list1Entity = [[WAAppRouteEntity alloc] initWithName:@"list"
-                                                                      path:@"list"
-                                                     sourceControllerClass:nil
-                                                     targetControllerClass:[WAListViewController class]
-                                                      presentingController:navigationController
-                                                  prefersModalPresentation:NO
-                                                  defaultParametersBuilder:nil
-                                                         allowedParameters:nil];
+    WAAppRouteEntity *list1Entity = [WAAppRouteEntity routeEntityWithName:@"list"
+                                                                     path:@"list"
+                                                    sourceControllerClass:nil
+                                                    targetControllerClass:[WAListViewController class]
+                                                     presentingController:navigationController
+                                                 prefersModalPresentation:NO
+                                                 defaultParametersBuilder:nil
+                                                        allowedParameters:nil];
     
-    WAAppRouteEntity *list1DetailEntity = [[WAAppRouteEntity alloc] initWithName:@"listDetail"
-                                                                            path:@"list/:articleID"
-                                                           sourceControllerClass:[WAListViewController class]
-                                                           targetControllerClass:[WAListDetailViewController class]
-                                                            presentingController:navigationController
-                                                        prefersModalPresentation:NO
-                                                        defaultParametersBuilder:^id<WAAppRouterParametersProtocol>{
-                                                            ArticleAppLinkParameters *params = [[ArticleAppLinkParameters alloc] initWithAllowedParameters:nil];
-                                                            params.displayType = @1;
-                                                            return params;
-                                                        }
-                                                               allowedParameters:nil];
+    WAAppRouteEntity *list1DetailEntity = [WAAppRouteEntity routeEntityWithName:@"listDetail"
+                                                                           path:@"list/:articleID"
+                                                          sourceControllerClass:[WAListViewController class]
+                                                          targetControllerClass:[WAListDetailViewController class]
+                                                           presentingController:navigationController
+                                                       prefersModalPresentation:NO
+                                                       defaultParametersBuilder:^id<WAAppRouterParametersProtocol>{
+                                                           ArticleAppLinkParameters *params = [[ArticleAppLinkParameters alloc] initWithAllowedParameters:nil];
+                                                           params.displayType = @1;
+                                                           return params;
+                                                       }
+                                                              allowedParameters:nil];
     
-    WAAppRouteEntity *list1DetailExtraEntity = [[WAAppRouteEntity alloc] initWithName:@"listDetailExtra"
-                                                                                 path:@"list/:articleID/extra"
-                                                                sourceControllerClass:[WAListDetailViewController class]
-                                                                targetControllerClass:[WAListDetailExtraViewController class]
-                                                                 presentingController:navigationController
-                                                             prefersModalPresentation:NO
-                                                             defaultParametersBuilder:nil
-                                                                    allowedParameters:@[@"articleID", @"articleTitle"]];
+    WAAppRouteEntity *list1DetailExtraEntity = [WAAppRouteEntity routeEntityWithName:@"listDetailExtra"
+                                                                                path:@"list/:articleID/extra"
+                                                               sourceControllerClass:[WAListDetailViewController class]
+                                                               targetControllerClass:[WAListDetailExtraViewController class]
+                                                                presentingController:navigationController
+                                                            prefersModalPresentation:NO
+                                                            defaultParametersBuilder:nil
+                                                                   allowedParameters:@[@"articleID", @"articleTitle"]];
     
     // Register the entities
-    [registrar registerAppRouteEntity:list1Entity];
-    [registrar registerAppRouteEntity:list1DetailEntity];
-    [registrar registerAppRouteEntity:list1DetailExtraEntity];
+    [self.router.registrar registerAppRouteEntity:list1Entity];
+    [self.router.registrar registerAppRouteEntity:list1DetailEntity];
+    [self.router.registrar registerAppRouteEntity:list1DetailExtraEntity];
     
     // Register some blocks
-    [registrar registerBlockRouteHandler:^(WAAppLink *appLink) {
+    [self.router.registrar registerBlockRouteHandler:^(WAAppLink *appLink) {
         [RZNotificationView showNotificationOn:RZNotificationContextAboveStatusBar
                                        message:[NSString stringWithFormat:@"You are dealing with item ID %@", appLink[@"articleID"]]
                                           icon:RZNotificationIconInfo
@@ -88,26 +85,19 @@
                                     
                                 }];
     }
-                                forRoute:@"list/*"];
+                                            forRoute:@"list/*"];
     
-    // Create the route handler
-    WAAppRouteHandler *routeHandler = [[WAAppRouteHandler alloc] initWithRouteRegistrar:registrar];
-    
-    [routeHandler setShouldHandleAppLinkBlock:^BOOL(WAAppRouteEntity *entity) {
+    [self.router.routeHandler setShouldHandleAppLinkBlock:^BOOL(WAAppRouteEntity *entity) {
         // Could return NO if not logged in for example
         return YES;
     }];
     
-    [routeHandler setControllerPreConfigurationBlock:^(UIViewController *controller, WAAppRouteEntity *routeEntity, WAAppLink *appLink) {
+    [self.router.routeHandler setControllerPreConfigurationBlock:^(UIViewController *controller, WAAppRouteEntity *routeEntity, WAAppLink *appLink) {
         if ([controller isKindOfClass:[WABaseViewController class]]) {
             // You could set here some entities like an image cache
             ((WABaseViewController *)controller).commonObject = @"Common object from global routing";
         }
     }];
-    
-    // Create the router
-    self.router = [[WAAppRouter alloc] initWithRegistrar:registrar
-                                            routeHandler:routeHandler];
     
     self.window.rootViewController = navigationController;
     

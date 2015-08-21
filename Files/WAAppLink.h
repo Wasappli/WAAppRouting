@@ -25,6 +25,11 @@
 - (instancetype)initWithURL:(NSURL *)url routeParameters:(NSDictionary *)routeParameters NS_DESIGNATED_INITIALIZER;
 
 /**
+ @see `initWithURL: routeParameters:`
+ */
++ (instancetype)appLinkWithURL:(NSURL *)url routeParameters:(NSDictionary *)routeParameters;
+
+/**
  *  Return the object for the key merged from `queryParameters` and from `routeParameters`. Please not that the `routeParameters` is evaluated first.
  *
  *  @param key the query key of the object you want to retrieve

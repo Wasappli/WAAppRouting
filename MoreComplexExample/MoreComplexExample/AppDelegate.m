@@ -42,79 +42,76 @@
     UINavigationController *navigationControllerList2 = [[UINavigationController alloc] init];
     navigationControllerList2.tabBarItem = list2Item;
 
-    // Allocate the default route matcher
-    WAAppRouteMatcher *routeMatcher = [[WAAppRouteMatcher alloc] init];
-    
-    // Create the Registrar
-    WAAppRouteRegistrar *registrar = [[WAAppRouteRegistrar alloc] initWithRouteMatcher:routeMatcher];
+    // Create the default router
+    self.router = [WAAppRouter defaultRouter];
     
     // Create the entities
-    WAAppRouteEntity *list1Entity = [[WAAppRouteEntity alloc] initWithName:@"list1"
-                                                                      path:@"list1"
-                                                     sourceControllerClass:nil
-                                                     targetControllerClass:[WAList1ViewController class]
-                                                      presentingController:navigationControllerList1
-                                                  prefersModalPresentation:NO
-                                                  defaultParametersBuilder:nil
-                                                         allowedParameters:nil];
+    WAAppRouteEntity *list1Entity = [WAAppRouteEntity routeEntityWithName:@"list1"
+                                                                     path:@"list1"
+                                                    sourceControllerClass:nil
+                                                    targetControllerClass:[WAList1ViewController class]
+                                                     presentingController:navigationControllerList1
+                                                 prefersModalPresentation:NO
+                                                 defaultParametersBuilder:nil
+                                                        allowedParameters:nil];
     
-    WAAppRouteEntity *list1DetailEntity = [[WAAppRouteEntity alloc] initWithName:@"listDetail1"
-                                                                            path:@"list1/:itemID"
-                                                           sourceControllerClass:[WAList1ViewController class]
-                                                           targetControllerClass:[WAList1DetailViewController class]
-                                                            presentingController:navigationControllerList1
-                                                        prefersModalPresentation:NO
-                                                        defaultParametersBuilder:nil
-                                                               allowedParameters:nil];
+    WAAppRouteEntity *list1DetailEntity = [WAAppRouteEntity routeEntityWithName:@"listDetail1"
+                                                                           path:@"list1/:itemID"
+                                                          sourceControllerClass:[WAList1ViewController class]
+                                                          targetControllerClass:[WAList1DetailViewController class]
+                                                           presentingController:navigationControllerList1
+                                                       prefersModalPresentation:NO
+                                                       defaultParametersBuilder:nil
+                                                              allowedParameters:nil];
     
-    WAAppRouteEntity *list1DetailExtraEntity = [[WAAppRouteEntity alloc] initWithName:@"listDetailExtra1"
-                                                                                 path:@"list1/:itemID/extra"
-                                                                sourceControllerClass:[WAList1DetailViewController class]
-                                                                targetControllerClass:[WAList1DetailExtraViewController class]
-                                                                 presentingController:navigationControllerList1
-                                                             prefersModalPresentation:NO
-                                                             defaultParametersBuilder:nil
-                                                                    allowedParameters:nil];
+    WAAppRouteEntity *list1DetailExtraEntity = [WAAppRouteEntity routeEntityWithName:@"listDetailExtra1"
+                                                                                path:@"list1/:itemID/extra"
+                                                               sourceControllerClass:[WAList1DetailViewController class]
+                                                               targetControllerClass:[WAList1DetailExtraViewController class]
+                                                                presentingController:navigationControllerList1
+                                                            prefersModalPresentation:NO
+                                                            defaultParametersBuilder:nil
+                                                                   allowedParameters:nil];
     
-    WAAppRouteEntity *list2Entity = [[WAAppRouteEntity alloc] initWithName:@"list2"
-                                                                      path:@"list2"
-                                                     sourceControllerClass:nil
-                                                     targetControllerClass:[WAList2ViewController class]
-                                                      presentingController:navigationControllerList2
-                                                  prefersModalPresentation:NO
-                                                  defaultParametersBuilder:nil
-                                                         allowedParameters:nil];
+    WAAppRouteEntity *list2Entity = [WAAppRouteEntity routeEntityWithName:@"list2"
+                                                                     path:@"list2"
+                                                    sourceControllerClass:nil
+                                                    targetControllerClass:[WAList2ViewController class]
+                                                     presentingController:navigationControllerList2
+                                                 prefersModalPresentation:NO
+                                                 defaultParametersBuilder:nil
+                                                        allowedParameters:nil];
     
-    WAAppRouteEntity *list2DetailEntity = [[WAAppRouteEntity alloc] initWithName:@"listDetail2"
-                                                                            path:@"list2/:itemID"
-                                                           sourceControllerClass:[WAList2ViewController class]
-                                                           targetControllerClass:[WAList2DetailViewController class]
-                                                            presentingController:navigationControllerList2
-                                                        prefersModalPresentation:NO
-                                                        defaultParametersBuilder:nil
-                                                               allowedParameters:nil];
+    WAAppRouteEntity *list2DetailEntity = [WAAppRouteEntity routeEntityWithName:@"listDetail2"
+                                                                           path:@"list2/:itemID"
+                                                          sourceControllerClass:[WAList2ViewController class]
+                                                          targetControllerClass:[WAList2DetailViewController class]
+                                                           presentingController:navigationControllerList2
+                                                       prefersModalPresentation:NO
+                                                       defaultParametersBuilder:nil
+                                                              allowedParameters:nil];
     
-    WAAppRouteEntity *modalEntity = [[WAAppRouteEntity alloc] initWithName:@"modal"
-                                                                      path:@"modal"
-                                                     sourceControllerClass:nil
-                                                     targetControllerClass:[WAModalViewController class]
-                                                      presentingController:nil
-                                                  prefersModalPresentation:YES
-                                                  defaultParametersBuilder:nil
-                                                         allowedParameters:nil];
+    WAAppRouteEntity *modalEntity = [WAAppRouteEntity routeEntityWithName:@"modal"
+                                                                     path:@"modal"
+                                                    sourceControllerClass:nil
+                                                    targetControllerClass:[WAModalViewController class]
+                                                     presentingController:nil
+                                                 prefersModalPresentation:YES
+                                                 defaultParametersBuilder:nil
+                                                        allowedParameters:nil];
     
     // Register the entities
-    [registrar registerAppRouteEntity:list1Entity];
-    [registrar registerAppRouteEntity:list1DetailEntity];
-    [registrar registerAppRouteEntity:list1DetailExtraEntity];
+    [self.router.registrar registerAppRouteEntity:list1Entity];
+    [self.router.registrar registerAppRouteEntity:list1DetailEntity];
+    [self.router.registrar registerAppRouteEntity:list1DetailExtraEntity];
     
-    [registrar registerAppRouteEntity:list2Entity];
-    [registrar registerAppRouteEntity:list2DetailEntity];
-
-    [registrar registerAppRouteEntity:modalEntity];
-
+    [self.router.registrar registerAppRouteEntity:list2Entity];
+    [self.router.registrar registerAppRouteEntity:list2DetailEntity];
+    
+    [self.router.registrar registerAppRouteEntity:modalEntity];
+    
     // Register some blocks
-    [registrar registerBlockRouteHandler:^(WAAppLink *appLink) {
+    [self.router.registrar registerBlockRouteHandler:^(WAAppLink *appLink) {
         [RZNotificationView showNotificationOn:RZNotificationContextAboveStatusBar
                                        message:[NSString stringWithFormat:@"You are dealing with item ID %@", appLink[@"itemID"]]
                                           icon:RZNotificationIconInfo
@@ -127,25 +124,19 @@
                                     
                                 }];
     }
-                                forRoute:@"list1/*"];
-    // Create the route handler
-    WAAppRouteHandler *routeHandler = [[WAAppRouteHandler alloc] initWithRouteRegistrar:registrar];
+                                            forRoute:@"list1/*"];
     
-    [routeHandler setShouldHandleAppLinkBlock:^BOOL(WAAppRouteEntity *entity) {
+    [self.router.routeHandler setShouldHandleAppLinkBlock:^BOOL(WAAppRouteEntity *entity) {
         // Could return NO if not logged in for example
         return YES;
     }];
     
-    [routeHandler setControllerPreConfigurationBlock:^(UIViewController *controller, WAAppRouteEntity *routeEntity, WAAppLink *appLink) {
+    [self.router.routeHandler setControllerPreConfigurationBlock:^(UIViewController *controller, WAAppRouteEntity *routeEntity, WAAppLink *appLink) {
         if ([controller isKindOfClass:[WABaseViewController class]]) {
             // You could set here some entities like an image cache
             ((WABaseViewController *)controller).commonObject = @"Common object from global routing";
         }
     }];
-    
-    // Create the router
-    self.router = [[WAAppRouter alloc] initWithRegistrar:registrar
-                                            routeHandler:routeHandler];
     
     // Set default controllers
     [navigationControllerList1 setViewControllers:@[[WAList1ViewController new]]];

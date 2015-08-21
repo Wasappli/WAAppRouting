@@ -27,6 +27,11 @@
 - (instancetype)initWithRegistrar:(WAAppRouteRegistrar *)registrar routeHandler:(id <WAAppRouteHandlerProtocol>)routeHandler NS_DESIGNATED_INITIALIZER;
 
 /**
+ *  @see `initWithRegistrar:routeHandler:`
+ */
++ (instancetype)routerWithRegistrar:(WAAppRouteRegistrar *)registrar routeHandler:(id <WAAppRouteHandlerProtocol>)routeHandler;
+
+/**
  *  Handle the URL you pass it
  *
  *  @param url the url you received from App Delegate
@@ -43,6 +48,10 @@
  *  @return YES if the URL is handled, NO otherwise
  */
 - (BOOL)handleUserActivity:(NSUserActivity *)userActivity;
+
+
+@property (nonatomic, strong, readonly) WAAppRouteRegistrar *registrar;
+@property (nonatomic, strong, readonly) id<WAAppRouteHandlerProtocol> routeHandler;
 
 @end
  

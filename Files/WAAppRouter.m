@@ -36,6 +36,10 @@
     return self;
 }
 
++ (instancetype)routerWithRegistrar:(WAAppRouteRegistrar *)registrar routeHandler:(id<WAAppRouteHandlerProtocol>)routeHandler {
+    return [[self alloc] initWithRegistrar:registrar routeHandler:routeHandler];
+}
+
 - (BOOL)handleURL:(NSURL *)url {
     if (!url) {
         return NO;

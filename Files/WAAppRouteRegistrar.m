@@ -31,6 +31,10 @@
     return self;
 }
 
++ (instancetype)registrarWithRouteMatcher:(id<WAAppRouteMatcherProtocol>)routeMatcher {
+    return [[self alloc] initWithRouteMatcher:routeMatcher];
+}
+
 - (void)registerAppRouteEntity:(WAAppRouteEntity *)entity {
     WAAppRouterClassAssertion(entity, WAAppRouteEntity);
 

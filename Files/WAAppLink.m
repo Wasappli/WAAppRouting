@@ -28,6 +28,10 @@
     return self;
 }
 
++ (instancetype)appLinkWithURL:(NSURL *)url routeParameters:(NSDictionary *)routeParameters {
+    return [[self alloc] initWithURL:url routeParameters:routeParameters];
+}
+
 #pragma mark - Object retrieval from key
 
 - (id)objectForKeyedSubscript:(NSString *)key {

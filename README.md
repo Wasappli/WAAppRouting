@@ -1,7 +1,6 @@
-**Developed and Maintained by [Ipodishima](https://github.com/ipodishima) Founder & CTO at [Wasappli Inc](http://wasapp.li).
-**
+**Developed and Maintained by [Ipodishima](https://github.com/ipodishima) Founder & CTO at [Wasappli Inc](http://wasapp.li).**
 
-So what is this library useful for? Good question. Let's answer by asking an other question. Have you been struggled at some point by the following issues? :
+So what is this library useful for? Good question. Let's answer by asking an other question. Have you been struggled at some point by the following issues?
 
 - Well, I need to add some shortcuts to some parts of my apps and it seems crappy to manually allocate the path and select the controllers I need.
 - I'm tired of using the push view controller method.
@@ -21,19 +20,25 @@ All this points are answered by `WAAppRouting` (and more)
 ## What motivated me
 Let's be honest, there are several routing libraries on Github to handle some of the behaviors described. But none of them fitted all my requirements. So I wrote this library with some things in mind:
 
-- Handle a stack of a controller. This is not ok to open the app on a hotel detail if there is not even a back button, or if the back button sends me back to where I was before opening the app. I just want the app to be opened so that when I hit back, I'm on the hotels list for the hotel city...
-- Do not force you to get this working with my route matcher, or my route handler. If you want to provide your own, you should be able to do it.
+- Handle a **stack** of a controller. 
+
+This is not ok to open the app on a hotel detail if there is not even a back button, or if the back button sends me back to where I was before opening the app. I just want the app to be opened so that when I hit back, I'm on the hotels list for the hotel city...
+
+- Do not force you to get this working **with my** route matcher, or **my** route handler. 
+
+If you want to provide your own, you should be able to do it.
 This last point is very important to me. I used (and use) too many libraries which are tighten to their technologies. Plus, the more they are dependant of their implementation, the less it is testable.
 This is why you'll see many protocols with a default implementation provided.
+
 - iOS 9 is coming (or came when you are reading this). And with iOS 9 comes this great feature called universal links. Well, I wanted something clean to address this new feature.
 
 ## Inspiration
-Historically, I first used [HHRouter](https://github.com/Huohua/HHRouter) and implemented my own stack controller management. Then, by rewriting code to support iOS 9, I saw that it was just a bunch of lines  with no error management, tighten to the controller hierarchy, not much readable, etc.
+Historically, I first used [HHRouter](https://github.com/Huohua/HHRouter) and implemented my own stack controller management. Then, by rewriting code to support iOS 9, I saw that it was just a bunch of lines with no error management, tighten to the controller hierarchy, not much readable, etc.
 
 I decided to drop it and get something more fun. I found [DeepLinkKit](https://github.com/usebutton/DeepLinkKit) and used it until I realized it wasn't fitting my stack requirement.
-So I rewrote a custom route handler to deal with it and finally got to the conclusion that 80% of deeplink was not used anymore. This is when I decided to drop it and write my own.
+So I rewrote a custom route handler to deal with it and finally arrived to the conclusion that 80% of deeplink was not used anymore. This is when I decided to drop it and write my own.
 
-So you might recognize some concept of the two libraries especially in the router handler implementation even the implementation has nothing to do with DeepLinkKit.
+So you might recognize some concept of the two libraries especially in the router handler even if the implementation has nothing to do with DeepLinkKit.
 
 # Install and use
 ## Requirements alongs with the default implementation
@@ -41,9 +46,9 @@ So you might recognize some concept of the two libraries especially in the route
 - The route matching works on `:itemID` and uses `*` as the wildcard character.
 
 ## Installation
-Use Cocoapods, this is the easiest way to do so
+Use Cocoapods, this is the easiest way to install the router.
 
-Then, well import `#import <WAAppRouting/WAAppRouting.h>` and you are good to go
+Then, well import `#import <WAAppRouting/WAAppRouting.h>` and you are good to go.
 
 You also need to configure a URL scheme (I won't get back to this, there is plenty of documentation out there)
 
@@ -55,74 +60,59 @@ UINavigationController *navigationController = [[UINavigationController alloc] i
     
 You'll need first to allocate a route matcher. You can use the default I wrote or create your own.
 
-```
-// Allocate the default route matcher
-WAAppRouteMatcher *routeMatcher = [[WAAppRouteMatcher alloc] init];
-```
-
-Then, you need to create the registrar which will act as a container for all the entities / paths pairs
-
 ```objc
-// Create the Registrar
-WAAppRouteRegistrar *registrar = [[WAAppRouteRegistrar alloc] initWithRouteMatcher:routeMatcher];
+// Create the default router
+self.router = [WAAppRouter defaultRouter];
 ```
 
 This is now the time to create some entities
 
 ```objc
 // Create the entities
-WAAppRouteEntity *list1Entity = [[WAAppRouteEntity alloc] initWithName:@"list"
-                                                                  path:@"list"
-                                                 sourceControllerClass:nil
-                                                 targetControllerClass:[WAListViewController class]
-                                                  presentingController:navigationController
-                                              prefersModalPresentation:NO
-                                              defaultParametersBuilder:nil
-                                                     allowedParameters:nil];
+WAAppRouteEntity *list1Entity = [WAAppRouteEntity routeEntityWithName:@"list"
+                                                                 path:@"list"
+                                                sourceControllerClass:nil
+                                                targetControllerClass:[WAListViewController class]
+                                                 presentingController:navigationController
+                                             prefersModalPresentation:NO
+                                             defaultParametersBuilder:nil
+                                                    allowedParameters:nil];
 
-WAAppRouteEntity *list1DetailEntity = [[WAAppRouteEntity alloc] initWithName:@"listDetail"
-                                                                        path:@"list/:articleID"
-                                                       sourceControllerClass:[WAListViewController class]
-                                                       targetControllerClass:[WAListDetailViewController class]
-                                                        presentingController:navigationController
-                                                    prefersModalPresentation:NO
-                                                    defaultParametersBuilder:nil
-                                                           allowedParameters:nil];
+WAAppRouteEntity *list1DetailEntity = [WAAppRouteEntity routeEntityWithName:@"listDetail"
+                                                                       path:@"list/:itemID"
+                                                      sourceControllerClass:[WAListViewController class]
+                                                      targetControllerClass:[WAListDetailViewController class]
+                                                       presentingController:navigationController
+                                                   prefersModalPresentation:NO
+                                                   defaultParametersBuilder:^id<WAAppRouterParametersProtocol> {
+                                                       
+                                                       NSMutableDictionary *defaultParameters = [NSMutableDictionary new];
+                                                       defaultParameters[@"defaultParam"]  = @1;
+                                                       defaultParameters[@"defaultParam2"] = @"Default parameter 2";
+                                                       return defaultParameters;
+                                                   }
+                                                          allowedParameters:nil];
 ```
 
 Add the entities to the registrar
 
 ```objc
 // Register the entities
-[registrar registerAppRouteEntity:list1Entity];
-[registrar registerAppRouteEntity:list1DetailEntity];
+[self.router.registrar registerAppRouteEntity:list1Entity];
+[self.router.registrar registerAppRouteEntity:list1DetailEntity];
 ```
 
 Add some block handler if needed
 
 ```objc
 // Register some blocks
-[registrar registerBlockRouteHandler:^(WAAppLink *appLink) {
+[self.router.registrar registerBlockRouteHandler:^(WAAppLink *appLink) {
     // Do something every time we are in list/something
 }
-                            forRoute:@"list/*"];
+                            			forRoute:@"list/*"];
 ```
 
-Use the default route handler provided (you can create your own)
-
-```
-// Create the route handler
-WAAppRouteHandler *routeHandler = [[WAAppRouteHandler alloc] initWithRouteRegistrar:registrar];
-```
-
-Finally, create the router
-```objc
-// Create the router
-self.router = [[WAAppRouter alloc] initWithRegistrar:registrar
-                                        routeHandler:routeHandler];
-```
-
-And set the navigation controller as the root controller
+Finally set the navigation controller as the root controller
 
 ```objc
 self.window.rootViewController = navigationController;
@@ -139,6 +129,17 @@ Do not forget to use the router!
 ```objc
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     return [self.router handleURL:url];
+}
+```
+
+Each controllers you use should implement `WAAppRouterTargetControllerProtocol` (it is a good idea to now to have a base view controller)
+So implement this method and voilà
+
+```
+- (void)reloadFromAppLinkRefresh {
+    // You can do something with self.appLink
+    // But more important: with self.appLinkRoutingParameters which has merged route|query|default parameters
+    NSString *articleTitle = self.appLinkRoutingParameters[@"article_title"];
 }
 ```
 
@@ -199,6 +200,38 @@ Here is an example of an alert triggered each time we are after `list/`
     }
                                 forRoute:@"list/*"];
 ```
+
+## Customize router behavior
+As said, I hate libraries you cannot customize without forking and diverging from the original source.
+That said, you can customize the router in two ways: custom route matcher and custom route handler.
+
+### Custom route matcher
+My implementation deals with basic. Meaning that it won't support `key=value1, value2` for the query for example. It is also case sentitive.
+If you have your own URL configuration like `list/$itemID` implementing a new route matcher is a good idea!
+
+To start, read `WAAppRouteMatcherProtocol` class. You have two methods you need to implement: `matchesURL: fromPathPattern:` and `parametersFromURL: withPathPattern:`.
+As you can see in my implementation, I'm using `WARoutePattern` to match the URL. It's kind of inspired by SocKit (for the naming convention).
+
+Then, you can easily create the router with 
+
+```objc
+// Allocate your route matcher
+MyRouteMatcher *routeMatcher = [MyRouteMatcher new];
+
+// Create the Registrar
+WAAppRouteRegistrar *registrar  = [WAAppRouteRegistrar registrarWithRouteMatcher:routeMatcher];
+
+// Create the route handler
+WAAppRouteHandler *routeHandler = [WAAppRouteHandler routeHandlerWithRouteRegistrar:registrar];
+
+// Create the router
+WAAppRouter *router = [WAAppRouter routerWithRegistrar:registrar
+                                          routeHandler:routeHandler];
+```
+
+### Custom route handler
+If for example, you don't want to handle a stack, or use something else than a `UINavigationController`, then consider creating your own route handler.
+Start by adopting `WAAppRouteHandlerProtocol` protocol. And then read `WAAppRouteHandler` to get inspiration.
 
 ## Special configuration consideration
 ### Custom container controller
@@ -311,4 +344,4 @@ For new features pull requests are encouraged and greatly appreciated! Please tr
 #That's all folks !
 
 - If your are happy don't hesitate to send me a tweet [@ipodishima](http://twitter.com/ipodishima) !
-- Disributed under MIT licence.
+- Distributed under MIT licence.
