@@ -1,0 +1,6 @@
+language: objective-c
+xcode_workspace: WAAppRoutingTests/WAAppRoutingTests.xcworkspace
+xcode_scheme: WAAppRoutingTestsTests
+podfile: WAAppRoutingTests/Podfile
+script:
+  - xcodebuild [DEFAULT_OPTIONS] CODE_SIGNING_REQUIRED=NO

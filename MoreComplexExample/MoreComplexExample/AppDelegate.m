@@ -43,7 +43,7 @@
     navigationControllerList2.tabBarItem = list2Item;
 
     // Create the default router
-    self.router = [WAAppRouter defaultRouter];
+    self.router = [WAAppRouter defaultRouterWithRootViewController:tabBarController];
     
     // Create the entities
     WAAppRouteEntity *list1Entity = [WAAppRouteEntity routeEntityWithName:@"list1"

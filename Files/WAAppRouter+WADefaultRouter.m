@@ -13,7 +13,7 @@
 
 @implementation WAAppRouter (WADefaultRouter)
 
-+ (instancetype) defaultRouter {
++ (instancetype) defaultRouterWithRootViewController:(UIViewController *)rootViewController {
     
     // Allocate the default route matcher
     WAAppRouteMatcher *routeMatcher = [WAAppRouteMatcher new];
@@ -22,7 +22,7 @@
     WAAppRouteRegistrar *registrar  = [WAAppRouteRegistrar registrarWithRouteMatcher:routeMatcher];
     
     // Create the route handler
-    WAAppRouteHandler *routeHandler = [WAAppRouteHandler routeHandlerWithRouteRegistrar:registrar];
+    WAAppRouteHandler *routeHandler = [WAAppRouteHandler routeHandlerWithRouteRegistrar:registrar rootViewController:rootViewController];
     
     // Create the router
     return [WAAppRouter routerWithRegistrar:registrar

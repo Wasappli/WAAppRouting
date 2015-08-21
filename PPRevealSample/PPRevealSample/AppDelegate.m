@@ -42,7 +42,7 @@
     
     // Init the router
     // Create the default router
-    self.router = [WAAppRouter defaultRouter];
+    self.router = [WAAppRouter defaultRouterWithRootViewController:revealSideViewController];
     
     // Create the entities
     WAAppRouteEntity *list1Entity = [WAAppRouteEntity routeEntityWithName:@"list1"

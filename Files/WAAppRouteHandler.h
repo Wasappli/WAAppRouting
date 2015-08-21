@@ -19,15 +19,17 @@
  *  Init with a route registrar. The registrar contains all the `WAAppRouteEntity` and is necessary for retrieving the entity stack.
  *
  *  @param registrar the registrar containing all the entities
+ * 
+ *  @param rootViewController the root view controller for the view controller hierarchy.
  *
  *  @return a route handler to feed the router
  */
-- (instancetype)initWithRouteRegistrar:(WAAppRouteRegistrar *)registrar NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithRouteRegistrar:(WAAppRouteRegistrar *)registrar rootViewController:(UIViewController *)rootViewController NS_DESIGNATED_INITIALIZER;
 
 /**
  * @see `initWithRouteRegistrar:`
  */
-+ (instancetype)routeHandlerWithRouteRegistrar:(WAAppRouteRegistrar *)registrar;
++ (instancetype)routeHandlerWithRouteRegistrar:(WAAppRouteRegistrar *)registrar rootViewController:(UIViewController *)rootViewController;
 
 @property (nonatomic, strong, readonly) WAAppRouteRegistrar *registrar;
 
