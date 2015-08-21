@@ -1,3 +1,6 @@
+**Developed and Maintained by [Ipodishima](https://github.com/ipodishima) Founder & CTO at [Wasappli Inc](http://wasapp.li).
+**
+
 So what is this library useful for? Good question. Let's answer by asking an other question. Have you been struggled at some point by the following issues? :
 
 - Well, I need to add some shortcuts to some parts of my apps and it seems crappy to manually allocate the path and select the controllers I need.
@@ -9,6 +12,12 @@ So what is this library useful for? Good question. Let's answer by asking an oth
 
 All this points are answered by `WAAppRouting` (and more)
 
+### Table of Contents
+1. [The story](#the-story)
+2. [Install and use](#install-and-use)
+3. [Go deeper](#go-deeper)
+
+#The story
 ## What motivated me
 Let's be honest, there are several routing libraries on Github to handle some of the behaviors described. But none of them fitted all my requirements. So I wrote this library with some things in mind:
 
@@ -21,16 +30,16 @@ This is why you'll see many protocols with a default implementation provided.
 ## Inspiration
 Historically, I first used [HHRouter](https://github.com/Huohua/HHRouter) and implemented my own stack controller management. Then, by rewriting code to support iOS 9, I saw that it was just a bunch of lines  with no error management, tighten to the controller hierarchy, not much readable, etc.
 
-I decided to drop it and get something cooler. I found [DeepLinkKit](https://github.com/usebutton/DeepLinkKit) and used it until I realized it wasn't fitting my stack requirement.
+I decided to drop it and get something more fun. I found [DeepLinkKit](https://github.com/usebutton/DeepLinkKit) and used it until I realized it wasn't fitting my stack requirement.
 So I rewrote a custom route handler to deal with it and finally got to the conclusion that 80% of deeplink was not used anymore. This is when I decided to drop it and write my own.
 
 So you might recognize some concept of the two libraries especially in the router handler implementation even the implementation has nothing to do with DeepLinkKit.
 
-# Requirements alongs with the default implementation
+# Install and use
+## Requirements alongs with the default implementation
 - The implementation I provide uses `UINavigationController` to handle the stack and can be used on `UITabBarController` as well.
 - The route matching works on `:itemID` and uses `*` as the wildcard character.
 
-# Install and use
 ## Installation
 Use Cocoapods, this is the easiest way to do so
 
@@ -292,3 +301,14 @@ NSString *query = [params queryStringWithWhiteList:@[@"articleID", @"articleTitl
 ### Notes
 - Only `NSString` and `NSNumber` parameters are supported at this time (no `NSDate` for example)
 - This could seems to be a pain in the ass to implement rather than using directly the parameters. True. Keep in mind I thought about this one in a large progress with a big maintenance and evolutions plan involved. 
+
+#Contributing : Problems, Suggestions, Pull Requests?
+
+Please open a new Issue [here](https://github.com/Wasappli/WAAppRouting/issues) if you run into a problem specific to WAAppRouting.
+
+For new features pull requests are encouraged and greatly appreciated! Please try to maintain consistency with the existing code style. If you're considering taking on significant changes or additions to the project, please ask me before by opening a new Issue to have a chance for a merge.
+
+#That's all folks !
+
+- If your are happy don't hesitate to send me a tweet [@ipodishima](http://twitter.com/ipodishima) !
+- Disributed under MIT licence.
