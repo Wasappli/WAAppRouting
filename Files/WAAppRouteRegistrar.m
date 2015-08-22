@@ -39,8 +39,8 @@
 
 - (void)registerAppRouteEntity:(WAAppRouteEntity *)entity {
     WAAppRouterClassAssertion(entity, WAAppRouteEntity);
-
-    WAAssert(!self.entities[entity.path], ([NSString stringWithFormat:@"You cannot add two entities for the same path: '%@'", entity.path]));
+    
+    WAAssert([self.entities[entity.path] isEqual:entity] || !self.entities[entity.path], ([NSString stringWithFormat:@"You cannot add two entities for the same path: '%@'", entity.path]));
 
     self.entities[entity.path] = entity;
 }

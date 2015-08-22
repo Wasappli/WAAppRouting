@@ -72,4 +72,38 @@
             self.allowedParameters];
 }
 
+#pragma mark - Equality
+
+- (BOOL)isEqualToRouteEntity:(WAAppRouteEntity *)routeEntity {
+    if (!routeEntity) {
+        return NO;
+    }
+    
+    BOOL haveEqualPaths                = (!self.path && !routeEntity.path) || [self.path isEqualToString:routeEntity.path];
+    BOOL haveEqualSourceClass          = (!self.sourceControllerClass && !routeEntity.sourceControllerClass) || [self.sourceControllerClass isEqual:routeEntity.sourceControllerClass];
+    BOOL haveEqualTargetClass          = (!self.targetControllerClass && !routeEntity.targetControllerClass) || [self.targetControllerClass isEqual:routeEntity.targetControllerClass];
+    BOOL haveSamePresentation          = (self.preferModalPresentation == routeEntity.preferModalPresentation);
+    BOOL haveEqualPresentingController = (!self.presentingController && !routeEntity.presentingController) || [self.presentingController isEqual:routeEntity.presentingController];
+
+    return haveEqualPaths && haveEqualSourceClass && haveEqualTargetClass && haveSamePresentation && haveEqualPresentingController;
+}
+
+#pragma mark NSObject
+
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+    
+    if (![object isKindOfClass:[WAAppRouteEntity class]]) {
+        return NO;
+    }
+    
+    return [self isEqualToRouteEntity:(WAAppRouteEntity *)object];
+}
+
+- (NSUInteger)hash {
+    return [self.path hash] ^ [self.sourceControllerClass hash] ^ [self.targetControllerClass hash] ^ [self.sourceControllerClass hash] + self.preferModalPresentation;
+}
+
 @end
