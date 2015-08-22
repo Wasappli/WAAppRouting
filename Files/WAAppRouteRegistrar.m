@@ -35,6 +35,8 @@
     return [[self alloc] initWithRouteMatcher:routeMatcher];
 }
 
+#pragma - Registering
+
 - (void)registerAppRouteEntity:(WAAppRouteEntity *)entity {
     WAAppRouterClassAssertion(entity, WAAppRouteEntity);
 
@@ -49,6 +51,69 @@
     WAAssert(!self.entities[route], ([NSString stringWithFormat:@"You cannot add two entities for the same path: '%@'", route]));
     self.entities[route] = [routeBlockHandler copy];
 }
+
+- (void)registerAppRoutePath:(NSString *)routePath presentingController:(UIViewController *)presentingController {
+    return [self registerAppRoutePath:routePath
+                 presentingController:presentingController
+        defaultParametersBuilderBlock:nil
+               allowedParametersBlock:nil];
+}
+
+- (void)registerAppRoutePath:(NSString *)routePath presentingController:(UIViewController *)presentingController defaultParametersBuilderBlock:(WAAppRouterDefaultParametersBuilderBlock (^)(NSString *path))defaultParametersBuilderBlock allowedParametersBlock:(NSArray* (^)(NSString *path))allowedParametersBlock {
+    WAAppRouterClassAssertion(routePath, NSString);
+    
+    NSArray *pathComponents = [routePath componentsSeparatedByString:@"/"];
+    
+    NSMutableString *currentPath = nil;
+    Class previousClass          = Nil;
+    
+    for (NSString *pathComponent in pathComponents) {
+        // Check if we have {} enclosure
+        NSRange startBraceCharacter = [pathComponent rangeOfString:@"{"];
+        NSRange endBraceCharacter   = [pathComponent rangeOfString:@"}"];
+        WAAssert(startBraceCharacter.location != NSNotFound && endBraceCharacter.location != NSNotFound, ([NSString stringWithFormat:@"You need to have the class enclosed between {ClassName} on %@", pathComponent]));
+        
+        // Extract infos
+        NSString *urlPathComponent = [pathComponent substringToIndex:startBraceCharacter.location];
+        Class targetClass          = NSClassFromString([pathComponent substringWithRange:NSMakeRange(startBraceCharacter.location + 1, endBraceCharacter.location - (startBraceCharacter.location + 1))]);
+        BOOL isModal               = [pathComponent hasSuffix:@"!"];
+        
+        // Check class name existance
+        WAAssert(targetClass != Nil, ([NSString stringWithFormat:@"The class %@ does not seems to be existing", NSStringFromClass(targetClass)]));
+        
+        if (!currentPath) {
+            currentPath = [NSMutableString stringWithString:urlPathComponent];
+        }
+        else {
+            [currentPath appendFormat:@"/%@", urlPathComponent];
+        }
+        
+        // Build the entity
+        NSArray *allowedParameters = nil;
+        if (allowedParametersBlock) {
+            allowedParameters = allowedParametersBlock(currentPath);
+        }
+        
+        WAAppRouterDefaultParametersBuilderBlock defaultParametersBuilder = nil;
+        if (defaultParametersBuilderBlock) {
+            defaultParametersBuilder = defaultParametersBuilderBlock(currentPath);
+        }
+        
+        WAAppRouteEntity *routeEntity = [WAAppRouteEntity routeEntityWithName:[currentPath copy]
+                                                                         path:[currentPath copy]
+                                                        sourceControllerClass:previousClass
+                                                        targetControllerClass:targetClass
+                                                         presentingController:!isModal ? presentingController : nil
+                                                     prefersModalPresentation:isModal
+                                                     defaultParametersBuilder:defaultParametersBuilder
+                                                            allowedParameters:allowedParameters];
+        [self registerAppRouteEntity:routeEntity];
+        
+        previousClass = targetClass;
+    }
+}
+
+#pragma mark - Retrieving
 
 - (WAAppRouteEntity *)entityForURL:(NSURL *)url {
     WAAssert(self.routeMatcher, @"You need to provide a route matcher on initialization");

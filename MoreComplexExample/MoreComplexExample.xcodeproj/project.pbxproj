@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		A6929956C51CEF3AB69EB6BB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D3EA550E6C84EBB93CD39AC /* libPods.a */; };
+		E02FC1F31B88A95E00B600E9 /* WAList1Subpath1DetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = E02FC1F21B88A95E00B600E9 /* WAList1Subpath1DetailController.m */; };
+		E02FC1F61B88A98200B600E9 /* WAList1Subpath2DetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = E02FC1F51B88A98200B600E9 /* WAList1Subpath2DetailController.m */; };
 		E0317E8B1B8513BB00E2F677 /* WAModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0317E8A1B8513BB00E2F677 /* WAModalViewController.m */; };
 		E07BF4001B85036C00DED3F7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E07BF3FF1B85036C00DED3F7 /* main.m */; };
 		E07BF4031B85036C00DED3F7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E07BF4021B85036C00DED3F7 /* AppDelegate.m */; };
@@ -38,6 +40,10 @@
 		0C7F9FC7DA3C1F485F6491D5 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		6D3EA550E6C84EBB93CD39AC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB9772F7AD598529BAAB1845 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		E02FC1F11B88A95E00B600E9 /* WAList1Subpath1DetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAList1Subpath1DetailController.h; sourceTree = "<group>"; };
+		E02FC1F21B88A95E00B600E9 /* WAList1Subpath1DetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAList1Subpath1DetailController.m; sourceTree = "<group>"; };
+		E02FC1F41B88A98200B600E9 /* WAList1Subpath2DetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAList1Subpath2DetailController.h; sourceTree = "<group>"; };
+		E02FC1F51B88A98200B600E9 /* WAList1Subpath2DetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAList1Subpath2DetailController.m; sourceTree = "<group>"; };
 		E0317E891B8513BB00E2F677 /* WAModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAModalViewController.h; sourceTree = "<group>"; };
 		E0317E8A1B8513BB00E2F677 /* WAModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAModalViewController.m; sourceTree = "<group>"; };
 		E07BF3FA1B85036C00DED3F7 /* MoreComplexExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoreComplexExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,6 +108,17 @@
 				6D3EA550E6C84EBB93CD39AC /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E02FC1F01B88A93700B600E9 /* SubPath */ = {
+			isa = PBXGroup;
+			children = (
+				E02FC1F11B88A95E00B600E9 /* WAList1Subpath1DetailController.h */,
+				E02FC1F21B88A95E00B600E9 /* WAList1Subpath1DetailController.m */,
+				E02FC1F41B88A98200B600E9 /* WAList1Subpath2DetailController.h */,
+				E02FC1F51B88A98200B600E9 /* WAList1Subpath2DetailController.m */,
+			);
+			name = SubPath;
 			sourceTree = "<group>";
 		};
 		E07BF3F11B85036C00DED3F7 = {
@@ -197,6 +214,7 @@
 				E07BF4301B85048600DED3F7 /* WAList1DetailViewController.m */,
 				E07BF42D1B85048600DED3F7 /* WAList1DetailExtraViewController.h */,
 				E07BF42E1B85048600DED3F7 /* WAList1DetailExtraViewController.m */,
+				E02FC1F01B88A93700B600E9 /* SubPath */,
 			);
 			name = "Tab 1";
 			sourceTree = "<group>";
@@ -346,6 +364,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E02FC1F31B88A95E00B600E9 /* WAList1Subpath1DetailController.m in Sources */,
 				E07BF4331B85048600DED3F7 /* WAList1DetailExtraViewController.m in Sources */,
 				E07BF42A1B85044B00DED3F7 /* WABaseTableViewController.m in Sources */,
 				E07BF4291B85044B00DED3F7 /* WABaseDetailViewController.m in Sources */,
@@ -355,6 +374,7 @@
 				E0317E8B1B8513BB00E2F677 /* WAModalViewController.m in Sources */,
 				E07BF4001B85036C00DED3F7 /* main.m in Sources */,
 				E07BF4351B85048600DED3F7 /* WAList1ViewController.m in Sources */,
+				E02FC1F61B88A98200B600E9 /* WAList1Subpath2DetailController.m in Sources */,
 				E07BF43E1B85077100DED3F7 /* WAList2DetailViewController.m in Sources */,
 				E07BF4341B85048600DED3F7 /* WAList1DetailViewController.m in Sources */,
 			);
@@ -478,6 +498,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = MoreComplexExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -489,6 +510,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = MoreComplexExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

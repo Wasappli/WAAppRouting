@@ -14,7 +14,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.title = @"Detail List 1";
+        self.title = @"Detail List 2";
     }
     return self;
 }
@@ -50,7 +50,7 @@
 }
 
 - (void)showModal {
-    [(AppDelegate *)[[UIApplication sharedApplication] delegate] goTo:@"morecomplexexample://modal"];
+    [(AppDelegate *)[[UIApplication sharedApplication] delegate] goTo:@"morecomplexexample://list2/%@/modal", self.appLinkRoutingParameters[@"itemID"]];
 }
 
 @end
