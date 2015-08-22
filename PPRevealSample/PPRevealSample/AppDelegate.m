@@ -10,13 +10,8 @@
 #import <PPRevealSideViewController/PPRevealSideViewController.h>
 #import <WAAppRouting/WAAppRouting.h>
 
-#import "WALeftMenuViewController.h"
 #import "WAList1ViewController.h"
-#import "WAList1DetailViewController.h"
-#import "WAList1DetailExtraViewController.h"
-#import "WAList2ViewController.h"
-#import "WAList2DetailViewController.h"
-#import "WAModalViewController.h"
+#import "WALeftMenuViewController.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) WAAppRouter *router;
@@ -44,81 +39,11 @@
     // Create the default router
     self.router = [WAAppRouter defaultRouter];
     
-    // Create the entities
-    WAAppRouteEntity *list1Entity = [WAAppRouteEntity routeEntityWithName:@"list1"
-                                                                     path:@"list1"
-                                                    sourceControllerClass:nil
-                                                    targetControllerClass:[WAList1ViewController class]
-                                                     presentingController:revealSideViewController
-                                                 prefersModalPresentation:NO
-                                                 defaultParametersBuilder:nil
-                                                        allowedParameters:nil];
-    
-    WAAppRouteEntity *list1DetailEntity = [WAAppRouteEntity routeEntityWithName:@"listDetail1"
-                                                                           path:@"list1/:itemID"
-                                                          sourceControllerClass:[WAList1ViewController class]
-                                                          targetControllerClass:[WAList1DetailViewController class]
-                                                           presentingController:revealSideViewController
-                                                       prefersModalPresentation:NO
-                                                       defaultParametersBuilder:nil
-                                                              allowedParameters:nil];
-    
-    WAAppRouteEntity *list1DetailExtraEntity = [WAAppRouteEntity routeEntityWithName:@"listDetailExtra1"
-                                                                                path:@"list1/:itemID/extra"
-                                                               sourceControllerClass:[WAList1DetailViewController class]
-                                                               targetControllerClass:[WAList1DetailExtraViewController class]
-                                                                presentingController:revealSideViewController
-                                                            prefersModalPresentation:NO
-                                                            defaultParametersBuilder:nil
-                                                                   allowedParameters:nil];
-    
-    WAAppRouteEntity *list2Entity = [WAAppRouteEntity routeEntityWithName:@"list2"
-                                                                     path:@"list2"
-                                                    sourceControllerClass:nil
-                                                    targetControllerClass:[WAList2ViewController class]
-                                                     presentingController:revealSideViewController
-                                                 prefersModalPresentation:NO
-                                                 defaultParametersBuilder:nil
-                                                        allowedParameters:nil];
-    
-    WAAppRouteEntity *list2DetailEntity = [WAAppRouteEntity routeEntityWithName:@"listDetail2"
-                                                                           path:@"list2/:itemID"
-                                                          sourceControllerClass:[WAList2ViewController class]
-                                                          targetControllerClass:[WAList2DetailViewController class]
-                                                           presentingController:revealSideViewController
-                                                       prefersModalPresentation:NO
-                                                       defaultParametersBuilder:nil
-                                                              allowedParameters:nil];
-    
-    WAAppRouteEntity *modalEntity = [WAAppRouteEntity routeEntityWithName:@"modal"
-                                                                     path:@"modal"
-                                                    sourceControllerClass:nil
-                                                    targetControllerClass:[WAModalViewController class]
-                                                     presentingController:nil
-                                                 prefersModalPresentation:YES
-                                                 defaultParametersBuilder:nil
-                                                        allowedParameters:nil];
-    
-    WAAppRouteEntity *leftMenuEntity = [WAAppRouteEntity routeEntityWithName:@"leftMenu"
-                                                                        path:@"left"
-                                                       sourceControllerClass:nil
-                                                       targetControllerClass:[WALeftMenuViewController class]
-                                                        presentingController:revealSideViewController
-                                                    prefersModalPresentation:NO
-                                                    defaultParametersBuilder:nil
-                                                           allowedParameters:nil];
-    
-    // Register the entities
-    [self.router.registrar registerAppRouteEntity:list1Entity];
-    [self.router.registrar registerAppRouteEntity:list1DetailEntity];
-    [self.router.registrar registerAppRouteEntity:list1DetailExtraEntity];
-    
-    [self.router.registrar registerAppRouteEntity:list2Entity];
-    [self.router.registrar registerAppRouteEntity:list2DetailEntity];
-    
-    [self.router.registrar registerAppRouteEntity:modalEntity];
-    
-    [self.router.registrar registerAppRouteEntity:leftMenuEntity];
+    // Create the paths
+    [self.router.registrar registerAppRoutePath:@"list1{WAList1ViewController}/:itemID{WAList1DetailViewController}/extra{WAList1DetailExtraViewController}" presentingController:revealSideViewController];
+    [self.router.registrar registerAppRoutePath:@"list2{WAList2ViewController}/:itemID{WAList2DetailViewController}" presentingController:revealSideViewController];
+    [self.router.registrar registerAppRoutePath:@"modal{WAModalViewController}!" presentingController:nil];
+    [self.router.registrar registerAppRoutePath:@"left{WALeftMenuViewController}" presentingController:revealSideViewController];
 
     self.window.rootViewController = revealSideViewController;
     

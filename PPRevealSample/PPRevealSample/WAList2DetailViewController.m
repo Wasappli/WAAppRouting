@@ -14,7 +14,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.title = @"Detail List 1";
+        self.title = @"Detail List 2";
     }
     return self;
 }

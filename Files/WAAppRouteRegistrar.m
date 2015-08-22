@@ -68,6 +68,12 @@
     Class previousClass          = Nil;
     
     for (NSString *pathComponent in pathComponents) {
+        
+        // If the component is 0, break. This might be an extra slash at the end
+        if ([pathComponent length] == 0) {
+            break;
+        }
+        
         // Check if we have {} enclosure
         NSRange startBraceCharacter = [pathComponent rangeOfString:@"{"];
         NSRange endBraceCharacter   = [pathComponent rangeOfString:@"}"];
