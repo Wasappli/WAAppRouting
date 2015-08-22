@@ -10,6 +10,6 @@
 
 @interface WABaseTableViewController : WABaseViewController <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong, nonnull) UITableView *tableView;
+@property (nonatomic, strong) UITableView *tableView;
 
 @end

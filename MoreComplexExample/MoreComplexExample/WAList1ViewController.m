@@ -26,7 +26,17 @@ static NSString *CellIdentifier = @"CellIdentifier";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    UIBarButtonItem *goToList2Modal = [[UIBarButtonItem alloc] initWithTitle:@"Goto list 2 Modal"
+                                                                       style:UIBarButtonItemStyleDone
+                                                                      target:self
+                                                                      action:@selector(gotoList2Modal)];
+    self.navigationItem.rightBarButtonItem = goToList2Modal;
+    
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
+}
+
+- (void) gotoList2Modal {
+    [(AppDelegate *)[[UIApplication sharedApplication] delegate] goTo:@"morecomplexexample://list2/%@/modal", self.appLinkRoutingParameters[@"itemID"]];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

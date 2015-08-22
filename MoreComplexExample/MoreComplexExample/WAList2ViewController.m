@@ -24,6 +24,16 @@ static NSString *CellIdentifier = @"CellIdentifier";
     [super viewDidLoad];
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
+    
+    UIBarButtonItem *showModal = [[UIBarButtonItem alloc] initWithTitle:@"Show modal"
+                                                                   style:UIBarButtonItemStyleDone
+                                                                  target:self
+                                                                  action:@selector(showModal)];
+    self.navigationItem.rightBarButtonItem = showModal;
+}
+
+- (void) showModal {
+    [(AppDelegate *)[[UIApplication sharedApplication] delegate] goTo:@"morecomplexexample://modal/"];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

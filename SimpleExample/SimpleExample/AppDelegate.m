@@ -9,10 +9,7 @@
 #import "AppDelegate.h"
 
 #import <WAAppRouting/WAAppRouting.h>
-
-#import "WAListViewController.h"
-#import "WAListDetailViewController.h"
-#import "WAListDetailExtraViewController.h"
+#import "WABaseViewController.h"
 
 #import <RZNotificationView/RZNotificationView.h>
 
@@ -33,44 +30,24 @@
     // Create the default router
     self.router = [WAAppRouter defaultRouter];
     
-// Create the entities
-WAAppRouteEntity *list1Entity = [WAAppRouteEntity routeEntityWithName:@"list"
-                                                                 path:@"list"
-                                                sourceControllerClass:nil
-                                                targetControllerClass:[WAListViewController class]
-                                                 presentingController:navigationController
-                                             prefersModalPresentation:NO
-                                             defaultParametersBuilder:nil
-                                                    allowedParameters:nil];
-
-WAAppRouteEntity *list1DetailEntity = [WAAppRouteEntity routeEntityWithName:@"listDetail"
-                                                                       path:@"list/:itemID"
-                                                      sourceControllerClass:[WAListViewController class]
-                                                      targetControllerClass:[WAListDetailViewController class]
-                                                       presentingController:navigationController
-                                                   prefersModalPresentation:NO
-                                                   defaultParametersBuilder:^id<WAAppRouterParametersProtocol> {
-                                                       
-                                                       NSMutableDictionary *defaultParameters = [NSMutableDictionary new];
-                                                       defaultParameters[@"defaultParam"]  = @1;
-                                                       defaultParameters[@"defaultParam2"] = @"Default parameter 2";
-                                                       return defaultParameters;
-                                                   }
-                                                          allowedParameters:nil];
+    // Create the default parameters builder for detail
+    id<WAAppRouterParametersProtocol> (^detailParametersBuilder)(void) = ^id<WAAppRouterParametersProtocol>(void) {
+        NSMutableDictionary *defaultParameters = [NSMutableDictionary new];
+        defaultParameters[@"defaultParam"]  = @1;
+        defaultParameters[@"defaultParam2"] = @"Default parameter 2";
+        return defaultParameters;
+    };
     
-    WAAppRouteEntity *list1DetailExtraEntity = [WAAppRouteEntity routeEntityWithName:@"listDetailExtra"
-                                                                                path:@"list/:itemID/extra"
-                                                               sourceControllerClass:[WAListDetailViewController class]
-                                                               targetControllerClass:[WAListDetailExtraViewController class]
-                                                                presentingController:navigationController
-                                                            prefersModalPresentation:NO
-                                                            defaultParametersBuilder:nil
-                                                                   allowedParameters:nil];
-    
-    // Register the entities
-    [self.router.registrar registerAppRouteEntity:list1Entity];
-    [self.router.registrar registerAppRouteEntity:list1DetailEntity];
-    [self.router.registrar registerAppRouteEntity:list1DetailExtraEntity];
+    // Register the path
+    [self.router.registrar registerAppRoutePath:@"list{WAListViewController}/:itemID{WAListDetailViewController}/extra{WAListDetailExtraViewController}"
+                           presentingController:navigationController
+                  defaultParametersBuilderBlock:^WAAppRouterDefaultParametersBuilderBlock(NSString *path) {
+                      if ([path isEqualToString:@"list/:itemID"]) {
+                          return detailParametersBuilder;
+                      }
+                      return nil;
+                  }
+                         allowedParametersBlock:nil];
     
     // Register some blocks
     [self.router.registrar registerBlockRouteHandler:^(WAAppLink *appLink) {

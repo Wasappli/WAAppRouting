@@ -46,10 +46,11 @@
     }
     
     // Check for a block
-    WAAppRouteHandlerBlock block  = [self.registrar blockHandlerForURL:url];
+    NSString *blockPathPattern    = nil;
+    WAAppRouteHandlerBlock block  = [self.registrar blockHandlerForURL:url pathPattern:&blockPathPattern];
     // Check for an entity
     WAAppRouteEntity *routeEntity = [self.registrar entityForURL:url];
-    
+
     // If there is nothing then this URL is not handled
     if (!routeEntity && !block) {
         return NO;
@@ -57,7 +58,7 @@
     
     // Get the route parameters
     NSDictionary *routeParameters = [self.registrar.routeMatcher parametersFromURL:url
-                                                                   withPathPattern:routeEntity.path];
+                                                                   withPathPattern:routeEntity.path ? : blockPathPattern];
     // Init the link
     WAAppLink *link = [[WAAppLink alloc] initWithURL:url
                                      routeParameters:routeParameters];
@@ -69,10 +70,13 @@
         block(link);
     }
     
-    // Handle the entity
-    handled = [self.routeHandler handleURL:url
-                           withRouteEntity:routeEntity
-                                   appLink:link];
+    if (routeEntity) {
+        // Handle the entity
+        handled = [self.routeHandler handleURL:url
+                               withRouteEntity:routeEntity
+                                       appLink:link];
+    }
+    
     return handled;
 }
 

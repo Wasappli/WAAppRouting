@@ -11,13 +11,7 @@
 #import <WAAppRouting/WAAppRouting.h>
 
 #import "WAList1ViewController.h"
-#import "WAList1DetailViewController.h"
-#import "WAList1DetailExtraViewController.h"
-
 #import "WAList2ViewController.h"
-#import "WAList2DetailViewController.h"
-
-#import "WAModalViewController.h"
 
 #import <RZNotificationView/RZNotificationView.h>
 
@@ -44,71 +38,33 @@
 
     // Create the default router
     self.router = [WAAppRouter defaultRouter];
+
+    // Register the first subpath
+    [self.router.registrar registerAppRoutePath:@"list1{WAList1ViewController}/:itemID{WAList1DetailViewController}/extra{WAList1DetailExtraViewController}/subpath1{WAList1Subpath1DetailController}"
+                           presentingController:navigationControllerList1];
     
-    // Create the entities
-    WAAppRouteEntity *list1Entity = [WAAppRouteEntity routeEntityWithName:@"list1"
-                                                                     path:@"list1"
-                                                    sourceControllerClass:nil
-                                                    targetControllerClass:[WAList1ViewController class]
-                                                     presentingController:navigationControllerList1
-                                                 prefersModalPresentation:NO
-                                                 defaultParametersBuilder:nil
-                                                        allowedParameters:nil];
+    // Register the second subpath
+    [self.router.registrar registerAppRoutePath:@"list1{WAList1ViewController}/:itemID{WAList1DetailViewController}/extra{WAList1DetailExtraViewController}/subpath2{WAList1Subpath2DetailController}"
+                           presentingController:navigationControllerList1];
     
-    WAAppRouteEntity *list1DetailEntity = [WAAppRouteEntity routeEntityWithName:@"listDetail1"
-                                                                           path:@"list1/:itemID"
-                                                          sourceControllerClass:[WAList1ViewController class]
-                                                          targetControllerClass:[WAList1DetailViewController class]
-                                                           presentingController:navigationControllerList1
-                                                       prefersModalPresentation:NO
-                                                       defaultParametersBuilder:nil
-                                                              allowedParameters:nil];
+    // Or you could use this notation
+//    WAAppRouteEntity *routeEntity = [WAAppRouteEntity routeEntityWithName:@"subpath2"
+//                                                                     path:@"list1/:itemID/extra/subpath2"
+//                                                    sourceControllerClass:NSClassFromString(@"WAList1DetailExtraViewController")
+//                                                    targetControllerClass:NSClassFromString(@"WAList1Subpath2DetailController")
+//                                                     presentingController:navigationControllerList1
+//                                                 prefersModalPresentation:NO
+//                                                 defaultParametersBuilder:nil
+//                                                        allowedParameters:nil];
+//    [self.router.registrar registerAppRouteEntity:routeEntity];
     
-    WAAppRouteEntity *list1DetailExtraEntity = [WAAppRouteEntity routeEntityWithName:@"listDetailExtra1"
-                                                                                path:@"list1/:itemID/extra"
-                                                               sourceControllerClass:[WAList1DetailViewController class]
-                                                               targetControllerClass:[WAList1DetailExtraViewController class]
-                                                                presentingController:navigationControllerList1
-                                                            prefersModalPresentation:NO
-                                                            defaultParametersBuilder:nil
-                                                                   allowedParameters:nil];
+    // Register tab bar item 2
+    [self.router.registrar registerAppRoutePath:@"list2{WAList2ViewController}/:itemID{WAList2DetailViewController}/modal{WAModalViewController}!"
+                           presentingController:navigationControllerList2];
     
-    WAAppRouteEntity *list2Entity = [WAAppRouteEntity routeEntityWithName:@"list2"
-                                                                     path:@"list2"
-                                                    sourceControllerClass:nil
-                                                    targetControllerClass:[WAList2ViewController class]
-                                                     presentingController:navigationControllerList2
-                                                 prefersModalPresentation:NO
-                                                 defaultParametersBuilder:nil
-                                                        allowedParameters:nil];
-    
-    WAAppRouteEntity *list2DetailEntity = [WAAppRouteEntity routeEntityWithName:@"listDetail2"
-                                                                           path:@"list2/:itemID"
-                                                          sourceControllerClass:[WAList2ViewController class]
-                                                          targetControllerClass:[WAList2DetailViewController class]
-                                                           presentingController:navigationControllerList2
-                                                       prefersModalPresentation:NO
-                                                       defaultParametersBuilder:nil
-                                                              allowedParameters:nil];
-    
-    WAAppRouteEntity *modalEntity = [WAAppRouteEntity routeEntityWithName:@"modal"
-                                                                     path:@"modal"
-                                                    sourceControllerClass:nil
-                                                    targetControllerClass:[WAModalViewController class]
-                                                     presentingController:nil
-                                                 prefersModalPresentation:YES
-                                                 defaultParametersBuilder:nil
-                                                        allowedParameters:nil];
-    
-    // Register the entities
-    [self.router.registrar registerAppRouteEntity:list1Entity];
-    [self.router.registrar registerAppRouteEntity:list1DetailEntity];
-    [self.router.registrar registerAppRouteEntity:list1DetailExtraEntity];
-    
-    [self.router.registrar registerAppRouteEntity:list2Entity];
-    [self.router.registrar registerAppRouteEntity:list2DetailEntity];
-    
-    [self.router.registrar registerAppRouteEntity:modalEntity];
+    // Register a modal you can trigger anytime
+    [self.router.registrar registerAppRoutePath:@"modal{WAModalViewController}!"
+                           presentingController:nil];
     
     // Register some blocks
     [self.router.registrar registerBlockRouteHandler:^(WAAppLink *appLink) {
@@ -148,8 +104,10 @@
     
     [self.window makeKeyAndVisible];
     
-    [self goTo:@"morecomplexexample://list2"];
-    //    [self goTo:@"morecomplexexample://list/3/extra"];
+    [self goTo:@"morecomplexexample://list1"];
+
+//    [self goTo:@"morecomplexexample://list2"];
+//    [self goTo:@"morecomplexexample://list1/3/extra"];
     
     return YES;
 }
