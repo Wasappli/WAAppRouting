@@ -85,11 +85,12 @@ typedef void (^WAAppRouteHandlerBlock)(WAAppLink *appLink);
 /**
  *  Get the block handler for a URL
  *
- *  @param url the URL you received in input
+ *  @param url         the URL you received in input
+ *  @param pathPattern the pattern used to register the entity
  *
  *  @return the block to execute
  */
-- (WAAppRouteHandlerBlock)blockHandlerForURL:(NSURL *)url;
+- (WAAppRouteHandlerBlock)blockHandlerForURL:(NSURL *)url pathPattern:(NSString *__autoreleasing *)pathPattern;
 
 /**
  *  Retrieve an entity from a class you want to display

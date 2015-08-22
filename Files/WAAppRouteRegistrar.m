@@ -144,7 +144,7 @@
     return foundedEntity;
 }
 
-- (WAAppRouteHandlerBlock)blockHandlerForURL:(NSURL *)url {
+- (WAAppRouteHandlerBlock)blockHandlerForURL:(NSURL *)url pathPattern:(NSString *__autoreleasing *)pathPatternFound {
     WAAssert(self.routeMatcher, @"You need to provide a route matcher on initialization");
     
     WAAppRouteHandlerBlock foundedBlock = nil;
@@ -160,6 +160,9 @@
         
         if (hasAMatch) {
             foundedBlock = block;
+            if (pathPattern) {
+                *pathPatternFound = pathPattern;
+            }
             break;
         }
     }
