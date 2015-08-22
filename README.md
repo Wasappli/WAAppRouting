@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/cocoapods/l/WAAppRouting.svg?style=flat)](http://cocoapods.org/pods/WAAppRouting)
 [![Platform](https://img.shields.io/cocoapods/p/WAAppRouting.svg?style=flat)](http://cocoapods.org/pods/WAAppRouting)
 
-**Developed and Maintained by [Ipodishima](https://github.com/ipodishima) Founder & CTO at [Wasappli Inc](http://wasapp.li).**
+**Developed and Maintained by [Ipodishima](https://github.com/ipodishima) Founder & CTO at [Wasappli Inc](http://wasapp.li).** (If you need to develop an app, [get in touch](mailto:contact@wasapp.li) with our team!)
 
 So what is this library useful for? Good question. Let's answer by asking an other question. Have you been struggled at some point by the following issues?
 
@@ -52,6 +52,7 @@ So you might recognize some concept of the two libraries especially in the route
 - The route matching works on `:itemID` and uses `*` as the wildcard character.
 
 ## Installation
+### Cocoapods
 Use Cocoapods, this is the easiest way to install the router.
 
 If you want to link `WAAppRouting` into an iOS app extension (or a shared framework that is linked to an app extension), you'll need to ensure that the `WA_APP_EXTENSION` flag is set when you compile the framework.  To do so using Cocoapods, add this to your `Podfile`:
@@ -71,7 +72,8 @@ end
 
 Older versions of cocoapods may require you to use `installer.project` instead of `installer.pods_project`, so if you get an error complaining that `pods_project` does not exist, update your cocoapods gem.
 
-Then, well import `#import <WAAppRouting/WAAppRouting.h>` and you are good to go.
+### Setup the router: easiest method
+Import `#import <WAAppRouting/WAAppRouting.h>` and you are good to start.
 
 You also need to configure a URL scheme (I won't get back to this, there is plenty of documentation out there)
 
@@ -88,7 +90,21 @@ You'll need first to allocate a route matcher. You can use the default I wrote o
 self.router = [WAAppRouter defaultRouter];
 ```
 
-This is now the time to create some entities
+Register you path using the syntax:
+- `url_path_component{ClassName}`
+- `url_path_component1{ClassName1}/url_path_component2{ClassName2}`
+ 
+Optionaly, you can trigger the modal presentation using `!` character. 
+For example: `url_path_component{ClassName}/modal{ModalClass}!` would result when calling `appscheme://url_path_component/modal` to `ModalClass` instance presented modally after placing `ClassName` in navigation controller stack.
+
+```objc
+// Register the path
+[self.router.registrar registerAppRoutePath:@"list{WAListViewController}/:itemID{WAListDetailViewController}/extra{WAListDetailExtraViewController}"
+                       presentingController:navigationController];
+```
+                       
+### Setup the router: more control method
+Start with the easiest method but stop at creating the path and replace by entities
 
 ```objc
 // Create the entities
@@ -256,6 +272,9 @@ WAAppRouter *router = [WAAppRouter routerWithRegistrar:registrar
 If for example, you don't want to handle a stack, or use something else than a `UINavigationController`, then consider creating your own route handler.
 Start by adopting `WAAppRouteHandlerProtocol` protocol. And then read `WAAppRouteHandler` to get inspiration.
 
+## iOS 9 support
+I still need to run some tests, but the idea is to have a router for the classic url scheme, and an other one for universal links.
+
 ## Special configuration consideration
 ### Custom container controller
 You should definitively take a look at the `PPRevealSample` project to get an idea of how to get this working. I'm also here to help if needed.
@@ -366,5 +385,6 @@ For new features pull requests are encouraged and greatly appreciated! Please tr
 
 #That's all folks !
 
-- If your are happy don't hesitate to send me a tweet [@ipodishima](http://twitter.com/ipodishima) !
+- If your are happy don't hesitate to send me a tweet [@ipodishima](http://twitter.com/ipodishima)!
 - Distributed under MIT licence.
+- Follow Wasappli on [facebook](https://www.facebook.com/wasappli)

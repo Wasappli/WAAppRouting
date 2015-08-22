@@ -5,7 +5,7 @@ PODS:
   - RZNotificationView (1.1.7):
     - MOOMaskedIconView (>= 0.1.0)
     - PPHelpMe (>= 1.0.0)
-  - WAAppRouting (0.0.2)
+  - WAAppRouting (0.0.3)
 
 DEPENDENCIES:
   - PureLayout
@@ -21,6 +21,6 @@ SPEC CHECKSUMS:
   PPHelpMe: 243c40d2fad33ebdcc6b158c0db54893e0cc2d14
   PureLayout: 270dfee2236f697ab1d5e2771c2e5c248495fa0d
   RZNotificationView: 37b4a32e03a5f44a91ea76465f33313943a874d8
-  WAAppRouting: 73dd0df69484479ba9ae1af9351af7e39cc36335
+  WAAppRouting: 1a16303bb2502b64e5f4fe287a19339cb40bf3dc
 
 COCOAPODS: 0.38.2
