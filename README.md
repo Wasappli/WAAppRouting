@@ -99,46 +99,10 @@ For example: `url_path_component{ClassName}/modal{ModalClass}!` would result whe
 
 ```objc
 // Register the path
-[self.router.registrar registerAppRoutePath:@"list{WAListViewController}/:itemID{WAListDetailViewController}/extra{WAListDetailExtraViewController}"
-                       presentingController:navigationController];
-```
-                       
-### Setup the router: more control method
-Start with the easiest method but stop at creating the path and replace by entities
-
-```objc
-// Create the entities
-WAAppRouteEntity *list1Entity = [WAAppRouteEntity routeEntityWithName:@"list"
-                                                                 path:@"list"
-                                                sourceControllerClass:nil
-                                                targetControllerClass:[WAListViewController class]
-                                                 presentingController:navigationController
-                                             prefersModalPresentation:NO
-                                             defaultParametersBuilder:nil
-                                                    allowedParameters:nil];
-
-WAAppRouteEntity *list1DetailEntity = [WAAppRouteEntity routeEntityWithName:@"listDetail"
-                                                                       path:@"list/:itemID"
-                                                      sourceControllerClass:[WAListViewController class]
-                                                      targetControllerClass:[WAListDetailViewController class]
-                                                       presentingController:navigationController
-                                                   prefersModalPresentation:NO
-                                                   defaultParametersBuilder:^id<WAAppRouterParametersProtocol> {
-                                                       
-                                                       NSMutableDictionary *defaultParameters = [NSMutableDictionary new];
-                                                       defaultParameters[@"defaultParam"]  = @1;
-                                                       defaultParameters[@"defaultParam2"] = @"Default parameter 2";
-                                                       return defaultParameters;
-                                                   }
-                                                          allowedParameters:nil];
-```
-
-Add the entities to the registrar
-
-```objc
-// Register the entities
-[self.router.registrar registerAppRouteEntity:list1Entity];
-[self.router.registrar registerAppRouteEntity:list1DetailEntity];
+[self.router.registrar
+ registerAppRoutePath:
+ @"list{WAListViewController}/:itemID{WAListDetailViewController}/extra{WAListDetailExtraViewController}"
+ presentingController:navigationController];
 ```
 
 Add some block handler if needed
@@ -180,6 +144,45 @@ So implement this method and voilà
     // But more important: with self.appLinkRoutingParameters which has merged route|query|default parameters
     NSString *articleTitle = self.appLinkRoutingParameters[@"article_title"];
 }
+```                      
+### Setup the router: more control method
+Start with the easiest method but replace the "create paths" by creating entities entities
+
+```objc
+// Create the entities
+WAAppRouteEntity *list1Entity =
+[WAAppRouteEntity routeEntityWithName:@"list"
+                                 path:@"list"
+                sourceControllerClass:nil
+                targetControllerClass:[WAListViewController class]
+                 presentingController:navigationController
+             prefersModalPresentation:NO
+             defaultParametersBuilder:nil
+                    allowedParameters:nil];
+
+WAAppRouteEntity *list1DetailEntity =
+[WAAppRouteEntity routeEntityWithName:@"listDetail"
+                                 path:@"list/:itemID"
+                sourceControllerClass:[WAListViewController class]
+                targetControllerClass:[WAListDetailViewController class]
+                 presentingController:navigationController
+             prefersModalPresentation:NO
+             defaultParametersBuilder:^id<WAAppRouterParametersProtocol> {
+                 
+                 NSMutableDictionary *defaultParameters = [NSMutableDictionary new];
+                 defaultParameters[@"defaultParam"]  = @1;
+                 defaultParameters[@"defaultParam2"] = @"Default parameter 2";
+                 return defaultParameters;
+             }
+                    allowedParameters:nil];
+```
+
+Add the entities to the registrar
+
+```objc
+// Register the entities
+[self.router.registrar registerAppRouteEntity:list1Entity];
+[self.router.registrar registerAppRouteEntity:list1DetailEntity];
 ```
 
 ## Samples
@@ -187,7 +190,7 @@ Four samples are available
 
 - `SimpleExample`: This is a sample which handle a list, it's detail and an extra. This could be seen as an article lists, its detail and comments.
 - `SimpleExampleParameters`: This sample is the same as `SimpleExample` but is using the `WAAppLinkParameters` (the one more thing of this library).
-- `MoreComplexExample`: This sample demonstrates how to deal with a tab bar controller.
+- `MoreComplexExample`: This sample demonstrates how to deal with a tab bar controller + how to handle modals.
 - `PPRevealSample`: This sample acts as a demonstration that with a little bit of effort, custom container can fit into the routing library?
  
 ## Documentation
@@ -309,7 +312,7 @@ First, create a subclass
 ```
 
 You can see here three objects which should be mapped to the url keys
-You need to override the `mappingKeyProperty` getter
+You need to override the `mappingKeyProperty` getter to provide a mapping `url_key: object_property` 
 
 ```objc
 - (NSDictionary *)mappingKeyProperty {
@@ -321,43 +324,17 @@ You need to override the `mappingKeyProperty` getter
 }
 ```
 
-Next step is to go to your base view controller (if you not yet one it is a good idea to start now) and write some code you can customize. For example, you would deal with values exception here like cannot have a reservation date before today.
-
-Here is the default implementation idea you can reproduce in your app
-
-```objc
-- (void)configureWithAppLink:(WAAppLink *)appLink defaultParameters:(id<WAAppRouterParametersProtocol>)defaultParameters allowedParameters:(NSArray *)allowedParameters {
-
-    // Grab the parameters from the link
-    NSMutableDictionary *rawParameters = [NSMutableDictionary dictionaryWithDictionary:appLink.queryParameters];
-    if (appLink.routeParameters) {
-        [rawParameters setValuesForKeysWithDictionary:appLink.routeParameters];
-    }
-
-    // Erase all previous params and allocate with allowed parameters provided by the entity
-    self.routingParameters = [[ArticleAppLinkParameters alloc] initWithAllowedParameters:allowedParameters];
-    
-    // Merge with the default parameters provided by the entity
-    [self.routingParameters mergeWithAppRouterParameters:defaultParameters];
-    
-    // No set the values from the query itself
-    [self.routingParameters mergeWithRawParameters:rawParameters];
-    
-    // Call reload which is a random method defined for our purpose. This method should be implemented by your subclasses to reload data accordingly
-    [self reloadFromAppLink];
-}
-```
-
-You can now get the value directly
+There is a category I wrote on `UIViewController` which configure the object with merging for you.
+So, you can now get the value directly with
 
 ```objc
-self.label.text = [NSString stringWithFormat:@"ArticleID: %@", self.routingParameters.articleID];`
+self.label.text = [NSString stringWithFormat:@"ArticleID: %@", ((ArticleAppLinkParameters *)self.appLinkRoutingParameters).articleID];`
 ```
 
 You can copy the parameters, set values for a future use
 
 ```objc
-ArticleAppLinkParameters *params = [self.routingParameters copy];
+ArticleAppLinkParameters *params = [(ArticleAppLinkParameters *)self.appLinkRoutingParameters copy];
 params.articleTitle = [NSString stringWithFormat:@"My super article %ld", (long)indexPath.row];
 ```
 
