@@ -227,6 +227,7 @@
         {
             NSString * typeClassName = [typeAttribute substringWithRange:NSMakeRange(3, [typeAttribute length] - 4)];
             Class typeClass = NSClassFromString(typeClassName);
+            WAAssert([typeClass isSubclassOfClass:[NSString class]] || [typeClass isSubclassOfClass:[NSNumber class]], @"Only NSString and NSNumber are supported for the moment");
             dictionary[propName] = typeClass;
         }
     }
@@ -240,6 +241,38 @@
     id copy = [[[self class] allocWithZone:zone] initWithAllowedParameters:self.allowedParameters];
     [copy mergeWithAppRouterParameters:self];
     return copy;
+}
+
+#pragma mark - NSCoding
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    NSArray *excludedProperties = nil;
+    if ([self respondsToSelector:@selector(excludedPropertiesForEncoding)]) {
+        excludedProperties = [self excludedPropertiesForEncoding];
+    }
+    
+    for (NSString *propertyName in [self.mappingPropertyClass allKeys]) {
+        if ([excludedProperties containsObject:propertyName]) {
+            continue;
+        }
+        
+        [aCoder encodeObject:[self valueForKey:propertyName] forKey:propertyName];
+    }
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super init];
+    
+    if (self) {
+        [self commonInit];
+        
+        for (NSString *propertyName in [self.mappingPropertyClass allKeys]) {
+
+            [self setValue:[aDecoder decodeObjectForKey:propertyName] forKey:propertyName];
+        }
+    }
+    
+    return self;
 }
 
 @end

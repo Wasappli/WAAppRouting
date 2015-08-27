@@ -85,6 +85,6 @@
  NSString *query = [params queryStringWithWhiteList:@[@"articleID", @"articleTitle", @"displayType"];
  ```
  */
-@interface WAAppLinkParameters : NSObject <WAAppRouterParametersProtocol, NSCopying>
+@interface WAAppLinkParameters : NSObject <WAAppRouterParametersProtocol, NSCopying, NSCoding>
 
 @end

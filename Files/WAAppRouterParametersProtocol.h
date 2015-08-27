@@ -61,4 +61,11 @@
  */
 - (NSDictionary *)mappingPropertyKey;
 
+/**
+ *  Return an array with all the properties name you wish not to encode
+ *
+ *  @return an array with strings matching properties names
+ */
+- (NSArray *)excludedPropertiesForEncoding;
+
 @end
