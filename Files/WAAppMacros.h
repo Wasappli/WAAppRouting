@@ -8,4 +8,10 @@
 #define WAAppRouterProtocolAssertion(obj, protocolName) WAAppRouterParameterAssert(obj && [obj conformsToProtocol:@protocol(protocolName)])
 #define WAAssert(condition, description) NSAssert(condition, description)
 
+#ifdef WAAPP_DEBUG
+ #define WAAppLog(fmt, ...) NSLog((@"WAAppRouting %s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ## __VA_ARGS__);
+#else
+ #define WAAppLog(fmt, ...)
+#endif
+
 #endif

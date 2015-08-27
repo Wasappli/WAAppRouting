@@ -39,10 +39,14 @@
 
 - (void)registerAppRouteEntity:(WAAppRouteEntity *)entity {
     WAAppRouterClassAssertion(entity, WAAppRouteEntity);
-    
+    WAAppRouteEntity *existingEntity = self.entities[entity.path];
     WAAssert([self.entities[entity.path] isEqual:entity] || !self.entities[entity.path], ([NSString stringWithFormat:@"You cannot add two entities for the same path: '%@'", entity.path]));
-
-    self.entities[entity.path] = entity;
+    
+    if (![existingEntity isEqual:entity]) {
+        self.entities[entity.path] = entity;
+    } else {
+        WAAppLog(@"An existing entity is already registered for %@. The one you passed is just ignored. This is a debug log to advice you that you should set any value (default or allowed params before if needed", entity.path);
+    }
 }
 
 - (void)registerBlockRouteHandler:(WAAppRouteHandlerBlock)routeBlockHandler forRoute:(NSString *)route {
