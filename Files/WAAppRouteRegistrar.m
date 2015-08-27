@@ -85,11 +85,12 @@
         
         // Extract infos
         NSString *urlPathComponent = [pathComponent substringToIndex:startBraceCharacter.location];
-        Class targetClass          = NSClassFromString([pathComponent substringWithRange:NSMakeRange(startBraceCharacter.location + 1, endBraceCharacter.location - (startBraceCharacter.location + 1))]);
+        NSString *className        = [pathComponent substringWithRange:NSMakeRange(startBraceCharacter.location + 1, endBraceCharacter.location - (startBraceCharacter.location + 1))];
+        Class targetClass          = NSClassFromString(className);
         BOOL isModal               = [pathComponent hasSuffix:@"!"];
-        
+
         // Check class name existance
-        WAAssert(targetClass != Nil, ([NSString stringWithFormat:@"The class %@ does not seems to be existing", NSStringFromClass(targetClass)]));
+        WAAssert(targetClass != Nil, ([NSString stringWithFormat:@"The class %@ does not seems to be existing", className]));
         
         if (!currentPath) {
             currentPath = [NSMutableString stringWithString:urlPathComponent];
