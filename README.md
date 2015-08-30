@@ -36,7 +36,7 @@ If you want to provide your own, you should be able to do it.
 This last point is very important to me. I used (and use) too many libraries which are tighten to their technologies. Plus, the more they are dependant of their implementation, the less it is testable.
 This is why you'll see many protocols with a default implementation provided.
 
-- iOS 9 is coming (or came when you are reading this). And with iOS 9 comes this great feature called universal links. Well, I wanted something clean to address this new feature.
+- iOS 9 is coming (or came when you are reading this). And with iOS 9 comes this great feature called [universal links](https://developer.apple.com/library/prerelease/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html#//apple_ref/doc/uid/TP40016308-CH12). Well, I wanted something clean to address this new feature.
 
 ## Inspiration
 Historically, I first used [HHRouter](https://github.com/Huohua/HHRouter) and implemented my own stack controller management. Then, by rewriting code to support iOS 9, I saw that it was just a bunch of lines with no error management, tighten to the controller hierarchy, not much readable, etc.
