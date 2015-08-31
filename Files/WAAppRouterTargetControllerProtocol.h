@@ -9,6 +9,8 @@
 @import Foundation;
 #import "WAAppRouterParametersProtocol.h"
 
+@class WAAppLink;
+
 /**
  *  @brief All controllers used with the route handler should conforms to this protocol in order to get configured with the app link
  */
@@ -18,5 +20,6 @@
 
 @optional
 + (Class <WAAppRouterParametersProtocol>)appLinkParametersClass;
+- (void)waappRoutingDidDisplayController:(UIViewController *)controller withAppLink:(WAAppLink *)appLink;
 
 @end

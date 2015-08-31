@@ -10,6 +10,7 @@
 #import "WAAppMacros.h"
 
 #import "WAAppRoutingContainerPresentationProtocol.h"
+#import "WAAppRouterTargetControllerProtocol.h"
 
 #import "WAAppRouteEntity.h"
 #import "WAAppRouteRegistrar.h"
@@ -96,6 +97,7 @@
             
             // Present the entity
             previousController = [self presentEntity:entity
+                                      fromController:previousController
                                          withAppLink:appLink
                                             animated:animated];
         }
@@ -233,7 +235,7 @@
                    allowedParameters:entity.allowedParameters];
 }
 
-- (UIViewController *) presentEntity:(WAAppRouteEntity *)entity withAppLink:(WAAppLink *)appLink animated:(BOOL)animated {
+- (UIViewController *) presentEntity:(WAAppRouteEntity *)entity fromController:(UIViewController *)fromController withAppLink:(WAAppLink *)appLink animated:(BOOL)animated {
     
     // First, present the controller
     UIViewController *targetViewController =
@@ -246,6 +248,12 @@
     [self configureController:targetViewController
                    fromEntity:entity
                       appLink:appLink];
+    
+    // Tell it that it displayed a new controller
+    if ([(id<WAAppRouterTargetControllerProtocol>)fromController respondsToSelector:@selector(waappRoutingDidDisplayController:withAppLink:)]) {
+        [(id<WAAppRouterTargetControllerProtocol>)fromController waappRoutingDidDisplayController:targetViewController
+                                                                                      withAppLink:appLink];
+    }
     
     return targetViewController;
 }

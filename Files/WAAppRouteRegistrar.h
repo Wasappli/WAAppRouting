@@ -34,7 +34,7 @@ typedef void (^WAAppRouteHandlerBlock)(WAAppLink *appLink);
 + (instancetype)registrarWithRouteMatcher:(id <WAAppRouteMatcherProtocol>)routeMatcher;
 
 /**
- *  Register a new route entity
+ *  Register a new route entity. Be careful that if you pass the same entity, it won't update the parameters
  *
  *  @param entity the entity to register
  */
