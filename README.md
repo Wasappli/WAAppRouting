@@ -10,8 +10,8 @@ So what is this library useful for? Good question. Let's answer by asking an oth
 
 - Well, I need to add some shortcuts to some parts of my apps and it seems crappy to manually allocate the path and select the controllers I need.
 - I'm tired of using the push view controller method.
-- I wish I had some kind of url handling to get to specific parts of my app juste as easily as snapping a finger.
-- If it could even handle a controller stack this would juste be awesome.
+- I wish I had some kind of url handling to get to specific parts of my app just as easily as snapping a finger.
+- If it could even handle a controller stack this would just be awesome.
 - I found a library but it's not working with my custom container...
 - I found a great library but the route matching is not working with my requirements...
 
