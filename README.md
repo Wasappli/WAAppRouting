@@ -6,7 +6,7 @@
 
 **Developed and Maintained by [Ipodishima](https://github.com/ipodishima) Founder & CTO at [Wasappli Inc](http://wasapp.li).** (If you need to develop an app, [get in touch](mailto:contact@wasapp.li) with our team!)
 
-So what is this library useful for? Good question. Let's answer by asking an other question. Have you been struggled at some point by the following issues?
+So what is this library useful for? Good question. Let's answer by asking an other question. Have you been struggled at some point with the following issues?
 
 - Well, I need to add some shortcuts to some parts of my apps and it seems crappy to manually allocate the path and select the controllers I need.
 - I'm tired of using the push view controller method.
@@ -24,27 +24,27 @@ All this points are answered by `WAAppRouting` (and more)
 
 #The story
 ## What motivated me
-Let's be honest, there are several routing libraries on Github to handle some of the behaviors described. But none of them fitted all my requirements. So I wrote this library with some things in mind:
+Let's be honest, there are several routing libraries on Github to handle some of the behaviors described. But none of them fit all my requirements. So I wrote this library with some things in mind:
 
-- Handle a **stack** of a controller. 
+- Handle a **stack** of controllers. 
 
 This is not ok to open the app on a hotel detail if there is not even a back button, or if the back button sends me back to where I was before opening the app. I just want the app to be opened so that when I hit back, I'm on the hotels list for the hotel city...
 
 - Do not force you to get this working **with my** route matcher, or **my** route handler. 
 
 If you want to provide your own, you should be able to do it.
-This last point is very important to me. I used (and use) too many libraries which are tighten to their technologies. Plus, the more they are dependant of their implementation, the less it is testable.
+This last point is very important to me. I used (and use) too many libraries which are tightly tied to their technologies. Plus, the more they are dependant on their implementation, the less it is testable.
 This is why you'll see many protocols with a default implementation provided.
 
-- iOS 9 is coming (or came when you are reading this). And with iOS 9 comes this great feature called [universal links](https://developer.apple.com/library/prerelease/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html#//apple_ref/doc/uid/TP40016308-CH12). Well, I wanted something clean to address this new feature.
+- iOS 9 is coming (or here already when you are reading this). And with iOS 9 comes this great feature called [universal links](https://developer.apple.com/library/prerelease/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html#//apple_ref/doc/uid/TP40016308-CH12). Well, I wanted something clean to address this new feature.
 
 ## Inspiration
-Historically, I first used [HHRouter](https://github.com/Huohua/HHRouter) and implemented my own stack controller management. Then, by rewriting code to support iOS 9, I saw that it was just a bunch of lines with no error management, tighten to the controller hierarchy, not much readable, etc.
+Historically, I first used [HHRouter](https://github.com/Huohua/HHRouter) and implemented my own stack controller management. Then, by rewriting code to support iOS 9, I saw that it was just a bunch of lines with no error management, tightly tied to the controller hierarchy, not very readable, etc.
 
 I decided to drop it and get something more fun. I found [DeepLinkKit](https://github.com/usebutton/DeepLinkKit) and used it until I realized it wasn't fitting my stack requirement.
-So I rewrote a custom route handler to deal with it and finally arrived to the conclusion that 80% of deeplink was not used anymore. This is when I decided to drop it and write my own.
+So I rewrote a custom route handler to deal with it and finally arrived to the conclusion that 80% of DeepLinkKit was not used anymore. This is when I decided to drop it and write my own.
 
-So you might recognize some concept of the two libraries especially in the router handler even if the implementation has nothing to do with DeepLinkKit.
+So you might recognize some concepts of the two libraries, especially in the router handler, even if the implementation has nothing to do with DeepLinkKit.
 
 # Install and use
 ## Requirements alongs with the default implementation
@@ -75,15 +75,15 @@ Older versions of cocoapods may require you to use `installer.project` instead o
 ### Setup the router: easiest method
 Import `#import <WAAppRouting/WAAppRouting.h>` and you are good to start.
 
-You also need to configure a URL scheme (I won't get back to this, there is plenty of documentation out there)
+You also need to configure a URL scheme (I won't go into detail about this - there is plenty of documentation out there)
 
-A navigation controller is a good start
+A navigation controller is a good start:
 
 ```
 UINavigationController *navigationController = [[UINavigationController alloc] init];
 ```
     
-You'll need first to allocate a route matcher. You can use the default I wrote or create your own.
+You'll need first to allocate a route matcher. You can use the default I wrote or create your own:
 
 ```objc
 // Create the default router
@@ -95,7 +95,7 @@ Register you path using the syntax:
 - `url_path_component1{ClassName1}/url_path_component2{ClassName2}`
  
 Optionaly, you can trigger the modal presentation using `!` character. 
-For example: `url_path_component{ClassName}/modal{ModalClass}!` would result when calling `appscheme://url_path_component/modal` to `ModalClass` instance presented modally after placing `ClassName` in navigation controller stack.
+For example: `url_path_component{ClassName}/modal{ModalClass}!` would result when calling `appscheme://url_path_component/modal` to `ModalClass` instance presented modally after placing `ClassName` in the navigation controller stack.
 
 ```objc
 // Register the path
@@ -105,7 +105,7 @@ For example: `url_path_component{ClassName}/modal{ModalClass}!` would result whe
  presentingController:navigationController];
 ```
 
-Add some block handler if needed
+Add a block handler if needed
 
 ```objc
 // Register some blocks
@@ -115,19 +115,19 @@ Add some block handler if needed
                             			forRoute:@"list/*"];
 ```
 
-Finally set the navigation controller as the root controller
+Finally set the navigation controller as the root controller:
 
 ```objc
 self.window.rootViewController = navigationController;
 ```
 
-You can now use it and open the app with 
+You can now use it and open the app with:
 
 ```objc
 [self application:(UIApplication *)self openURL:[NSURL URLWithString:@"appscheme://list"] sourceApplication:nil annotation:nil];
 ```
 
-Do not forget to use the router!
+Don't forget to use the router!
 
 ```objc
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
@@ -135,8 +135,8 @@ Do not forget to use the router!
 }
 ```
 
-Each controllers you use should implement `WAAppRouterTargetControllerProtocol` (it is a good idea to now to have a base view controller)
-So implement this method and voilà
+Each controller you use should implement `WAAppRouterTargetControllerProtocol` (it is a good idea to have a base view controller)
+So implement this method and voilà:
 
 ```
 - (void)reloadFromAppLinkRefresh {
@@ -145,7 +145,7 @@ So implement this method and voilà
     NSString *articleTitle = self.appLinkRoutingParameters[@"article_title"];
 }
 ```                      
-### Setup the router: more control method
+### Setup the router: more control methods
 Start with the easiest method but replace the "create paths" by creating entities entities
 
 ```objc
@@ -186,7 +186,7 @@ Add the entities to the registrar
 ```
 
 ## Samples
-Four samples are available
+Four samples are available:
 
 - `SimpleExample`: This is a sample which handle a list, it's detail and an extra. This could be seen as an article lists, its detail and comments.
 - `SimpleExampleParameters`: This sample is the same as `SimpleExample` but is using the `WAAppLinkParameters` (the one more thing of this library).
@@ -197,10 +197,10 @@ Four samples are available
 The code is heavily documented, you should find all your answers. Otherwise, open an issue and I'll respond as quickly as possible.
 
 # Go deeper
-## Pre configure all controllers with objects.
-You might want to pass some values to the controllers when there are allocated.
-For example in a project I'm involved to, we have an image cache the controllers needs to display the image. This image cache is allocated by the App delegate (to avoid singletons and get more testable code).
-For doing this, you need to add a block implementation to the route handler
+## Pre-configure all controllers with objects.
+You might want to pass values to the controllers when they are allocated.
+For example in a project I'm involved in, we have an image cache that the controllers needs to display images. This image cache is allocated by the App delegate (to avoid singletons and get more testable code).
+For doing this, you need to add a block implementation to the route handler:
 
 ```objc
     [routeHandler setControllerPreConfigurationBlock:^(UIViewController *controller, WAAppRouteEntity *routeEntity, WAAppLink *appLink) {
@@ -211,7 +211,7 @@ For doing this, you need to add a block implementation to the route handler
 ```
 
 ## Forbid specific entities to be shown
-You can ask not to handle some routes on runtime by setting this block (for example you might not want to display some controllers if not logged in)
+You can ask not to handle some routes at runtime by setting this block (for example you might not want to display some controllers if not logged in):
 
 ```objc
     [routeHandler setShouldHandleAppLinkBlock:^BOOL(WAAppRouteEntity *entity) {
@@ -221,7 +221,7 @@ You can ask not to handle some routes on runtime by setting this block (for exam
 ```
 
 ## Wildcard URL
-You can have some wildcard urls like `list/*/extra` meaning that for any value instead of the `*`, the entity or the block would be executed. Avoid using it with entities but rather with block.
+You can have wildcard urls like `list/*/extra` meaning that for any value instead of the `*`, the entity or the block would be executed. Avoid using it with entities but rather with block.
 An url in form of `list/*` will match both `list/path` and `list/path/extra`
 
 Here is an example of an alert triggered each time we are after `list/`
@@ -248,13 +248,13 @@ As said, I hate libraries you cannot customize without forking and diverging fro
 That said, you can customize the router in two ways: custom route matcher and custom route handler.
 
 ### Custom route matcher
-My implementation deals with basic. Meaning that it won't support `key=value1, value2` for the query for example. It is also case sentitive.
+My implementation deals with basics. Meaning that it won't support `key=value1, value2` for the query for example. It is also case sentitive.
 If you have your own URL configuration like `list/$itemID` implementing a new route matcher is a good idea!
 
-To start, read `WAAppRouteMatcherProtocol` class. You have two methods you need to implement: `matchesURL: fromPathPattern:` and `parametersFromURL: withPathPattern:`.
+To start, read the `WAAppRouteMatcherProtocol` class. You have two methods you need to implement: `matchesURL: fromPathPattern:` and `parametersFromURL: withPathPattern:`.
 As you can see in my implementation, I'm using `WARoutePattern` to match the URL. It's kind of inspired by SocKit (for the naming convention).
 
-Then, you can easily create the router with 
+Then, you can easily create the router with:
 
 ```objc
 // Allocate your route matcher
@@ -276,16 +276,16 @@ If for example, you don't want to handle a stack, or use something else than a `
 Start by adopting `WAAppRouteHandlerProtocol` protocol. And then read `WAAppRouteHandler` to get inspiration.
 
 ## iOS 9 support
-I still need to run some tests, but the idea is to have a router for the classic url scheme, and an other one for universal links.
+I still need to run some tests, but the idea is to have a router for the classic url scheme, and another one for universal links.
 
 ## Special configuration consideration
 ### Custom container controller
 You should definitively take a look at the `PPRevealSample` project to get an idea of how to get this working. I'm also here to help if needed.
-Basic idea is try to allocate all the navigation controller you need and pass them as the presenting controller. Then, this would behave like the tab bar (see it's category).
-If not, then you are in the `PPRevealSideViewController` context where the navigation controller gets allocated in the fly. The idea is to pass the container as the `presentingController` property and implement the `WAAppRoutingContainerPresentationProtocol` protocol (you need the optional method as well).
+Basic idea is try to allocate all the navigation controllers you need and pass them as the presenting controller. Then, this would behave like a tab bar (see it's category).
+If not, then you are in the `PPRevealSideViewController` context where the navigation controller gets allocated on the fly. The idea is to pass the container as the `presentingController` property and implement the `WAAppRoutingContainerPresentationProtocol` protocol (you need the optional method as well).
 
 ### Modal with navigation controller
-You cannot (yet) present a modal and then push a detail. Like presenting a login view but pushed to the signup controller.
+You cannot (yet) present a modal controller and then push a detail one. Like presenting a login view but pushed onto the signup controller.
 
 ### Reuse controllers at different locations
 Because the stack retrieval is implemented as dealing with controller class unicity, you cannot have two or more `WAAppRouteEntity` with the same target class when the source controller class is not nil.
@@ -294,12 +294,12 @@ If you need to reuse the controller at differents places, consider creating simp
 ## The one more thing: avoid having parameters keys hardcoded
 ###Purpose
 There is a one more thing to this library which is `WAAppLinkParameters` class.
-The idea behind is to avoid hardcoding the values 
-It's behavior is based on an implementation of `WAAppRouterParametersProtocol` protocol. Which means that you can provide your own or subclass `WAAppLinkParameters` which provides default behavior and all protocol methods implementation.
+The idea behind is to avoid hardcoding the values. 
+The behavior is based on an implementation of `WAAppRouterParametersProtocol` protocol, which means that you can provide your own or subclass `WAAppLinkParameters` which provides default behavior and all protocol methods implementation.
 Let's have a look to an example you can find on `SimpleExampleParameters` sample project.
 
 ### Example
-First, create a subclass
+First, create a subclass:
 
 ```objc
 @interface ArticleAppLinkParameters : WAAppLinkParameters
@@ -312,7 +312,7 @@ First, create a subclass
 ```
 
 You can see here three objects which should be mapped to the url keys
-You need to override the `mappingKeyProperty` getter to provide a mapping `url_key: object_property` 
+You need to override the `mappingKeyProperty` getter to provide a mapping `url_key: object_property`:
 
 ```objc
 - (NSDictionary *)mappingKeyProperty {
@@ -324,35 +324,35 @@ You need to override the `mappingKeyProperty` getter to provide a mapping `url_k
 }
 ```
 
-There is a category I wrote on `UIViewController` which configure the object with merging for you.
-So, you can now get the value directly with
+There is a category I wrote on `UIViewController` which configures the object with merging for you.
+So, you can now get the value directly with:
 
 ```objc
 self.label.text = [NSString stringWithFormat:@"ArticleID: %@", ((ArticleAppLinkParameters *)self.appLinkRoutingParameters).articleID];`
 ```
 
-You can copy the parameters, set values for a future use
+You can copy the parameters, and set values for a future use:
 
 ```objc
 ArticleAppLinkParameters *params = [(ArticleAppLinkParameters *)self.appLinkRoutingParameters copy];
 params.articleTitle = [NSString stringWithFormat:@"My super article %ld", (long)indexPath.row];
 ```
 
-Grab the query with a white list
+Grab the query with a white list:
 
 ```objc
 NSString *query = [params queryStringWithWhiteList:@[@"articleID", @"articleTitle", @"displayType"];
 ```
 
 ### Advantages
-- Update any time the key on URLs without touching your code.
+- Update at any time the key on URLs without touching your code.
 - Avoid regressions when you add new parameters in the URL.
-- Easily build queries for moving from a controller to an other.
-- Provide defaults values to a controller initialization. All your configuration is done in one place.
+- Easily build queries for moving from one controller to another.
+- Provide default values to a controller initialization. All your configuration is done in one place.
 
 ### Notes
 - Only `NSString` and `NSNumber` parameters are supported at this time (no `NSDate` for example)
-- This could seems to be a pain in the ass to implement rather than using directly the parameters. True. Keep in mind I thought about this one in a large progress with a big maintenance and evolutions plan involved. 
+- This could seems to be a pain in the ass to implement rather than using the parameters directly. True but keep in mind I thought about this one in a large project with big maintenance and evolutions plan involved. 
 
 #Contributing : Problems, Suggestions, Pull Requests?
 
