@@ -237,10 +237,17 @@
 
 - (UIViewController *) presentEntity:(WAAppRouteEntity *)entity fromController:(UIViewController *)fromController withAppLink:(WAAppLink *)appLink animated:(BOOL)animated {
     
+    // Get the navigation controller we'll use
+    UINavigationController *navigationController = [self navigationControllerControllerForEntity:entity];
+    // If the entity we are trying to place has no previous controller + the controller used has some in stack, then erase the stack
+    if (!fromController && [navigationController.viewControllers count] > 0) {
+        [navigationController setViewControllers:@[]];
+    }
+    
     // First, present the controller
     UIViewController *targetViewController =
     [self presentTargetViewControllerClass:entity.targetControllerClass
-      inNavigationControllerViewController:[self navigationControllerControllerForEntity:entity]
+      inNavigationControllerViewController:navigationController
                    preferModalPresentation:entity.preferModalPresentation
                                   animated:animated];
     
