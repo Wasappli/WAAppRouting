@@ -8,6 +8,7 @@
 
 #import "WAAppLinkParameters.h"
 #import "WAAppMacros.h"
+#import "NSString+WAAdditions.h"
 
 @import ObjectiveC.runtime;
 
@@ -158,7 +159,7 @@
             }
             
             if ([value isKindOfClass:[NSString class]]) {
-                value = [(NSString *)value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                value = [(NSString *)value waapp_stringByAddingPercentEscapes];
             }
             [keyValuesPair addObject:[NSString stringWithFormat:@"%@=%@", urlProperty, value]];
         }

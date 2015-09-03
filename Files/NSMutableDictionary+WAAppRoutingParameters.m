@@ -7,6 +7,7 @@
 //
 
 #import "NSMutableDictionary+WAAppRoutingParameters.h"
+#import "NSString+WAAdditions.h"
 #import "WAAppMacros.h"
 
 @implementation NSMutableDictionary (WAAppRoutingParameters)
@@ -44,7 +45,7 @@
     [self enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         id value = obj;
         if ([value isKindOfClass:[NSString class]]) {
-            value = [(NSString *)value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            value = [(NSString *)value waapp_stringByAddingPercentEscapes];
         }
         [keyValuesPair addObject:[NSString stringWithFormat:@"%@=%@", key, value]];
     }];
