@@ -153,7 +153,7 @@
             }
         } while (currentEntity);
     }
-
+    
     [allEntities addObject:fromEntity];
     
     return [allEntities copy];
@@ -287,12 +287,20 @@
 
 #pragma mark - View controller management
 
-- (UIViewController *)rootViewController {
+- (UIViewController *)presentingViewController {
 #ifndef WA_APP_EXTENSION
-  return [[[UIApplication sharedApplication] keyWindow] rootViewController];
+    // Get the app root controller
+    UIViewController *rootController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+    UIViewController *lastControllerOnModalStack = rootController;
+    // Get the last one presented to use it as a modal presentating controller
+    while (lastControllerOnModalStack.presentedViewController) {
+        lastControllerOnModalStack = lastControllerOnModalStack.presentedViewController;
+    }
+    
+    return lastControllerOnModalStack;
 #endif
-  
-  return nil;
+    
+    return nil;
 }
 
 // Present the controller and deal with where it should be
@@ -305,18 +313,30 @@
     
     // First: is it shown as modal?
     if (preferModalPresentation) {
-        // Allocate the controller
-        controllerToReturn = [[targetViewControllerClass alloc] init];
-        // Allocate a navigation controller
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:(UIViewController *)controllerToReturn];
-        
         // Get the controller which will act as the presentation controller
         UIViewController *presentingViewController = navigationController;
         if (!presentingViewController) {
-          presentingViewController = [self rootViewController];
+            presentingViewController = [self presentingViewController];
         }
-        // Present
-        [presentingViewController presentViewController:navController animated:animated completion:NULL];
+        
+        // If the navigation controller already has the controller class, then do nothing
+        if ([presentingViewController isKindOfClass:[UINavigationController class]]
+            &&
+            [self viewControllerForClass:targetViewControllerClass
+                  inNavigationController:(UINavigationController *)presentingViewController]) {
+                // Pop to it
+                controllerToReturn = [self placeTargetViewControllerClass:targetViewControllerClass
+                                                   inNavigationController:(UINavigationController *)presentingViewController
+                                                                 animated:animated];
+            }
+        else {
+            // Allocate the controller
+            controllerToReturn = [[targetViewControllerClass alloc] init];
+            // Allocate a navigation controller
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:(UIViewController *)controllerToReturn];
+            // Present
+            [presentingViewController presentViewController:navController animated:animated completion:NULL];
+        }
     }
     else if ([navigationController isKindOfClass:[UINavigationController class]]) {
         // Second: is the controller a navigation controller?
