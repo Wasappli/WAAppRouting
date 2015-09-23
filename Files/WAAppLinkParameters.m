@@ -233,6 +233,8 @@
         }
     }
     
+    free(properties);
+    
     return [dictionary copy];
 }
 
