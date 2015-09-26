@@ -17,7 +17,14 @@ So what is this library useful for? Good question. Let's answer by asking an oth
 
 All this points are answered by `WAAppRouting` (and more)
 
-### Table of Contents
+## Which Uses?
+- For all iOS: enable linking in your app. It is always useful to tell your app to go to `home/events/3/register` with some magic involved.
+- For iOS 9: supports deeplinks (like [Twitter app](https://itunes.apple.com/us/app/twitter/id333903271?mt=8)). Opening this URL [Me on twitter](http://twitter.com/ipodishima) would opened directly the app instead of the website.
+- For iOS 9: respond to a [search event](#search). By using [CoreSpotlight](https://developer.apple.com/library/prerelease/ios/documentation/General/Conceptual/AppSearch/index.html#//apple_ref/doc/uid/TP40016308-CH4-SW1), users can go to your app by opening from a search result like a booking. At this point, you need to consider to `goto://bookings/bookingFromSearchID`. Please take a look at an implementation of routing using a library which automatically index your `CoreData` stack [WACoreDataSpotlight](https://github.com/Wasappli/WACoreDataSpotlight).
+- For iOS 9 and more specifically new iPhones 6S and 6+S: respond to [3D Touch](#3d-touch)
+
+
+## Table of Contents
 1. [The story](#the-story)
 2. [Install and use](#install-and-use)
 3. [Go deeper](#go-deeper)
@@ -54,6 +61,8 @@ So you might recognize some concepts of the two libraries, especially in the rou
 ## Installation
 ### Cocoapods
 Use Cocoapods, this is the easiest way to install the router.
+
+`pod 'WAAppRouting'`
 
 If you want to link `WAAppRouting` into an iOS app extension (or a shared framework that is linked to an app extension), you'll need to ensure that the `WA_APP_EXTENSION` flag is set when you compile the framework.  To do so using Cocoapods, add this to your `Podfile`:
 
@@ -277,6 +286,35 @@ Start by adopting `WAAppRouteHandlerProtocol` protocol. And then read `WAAppRout
 
 ## iOS 9 support
 I still need to run some tests, but the idea is to have a router for the classic url scheme, and another one for universal links.
+
+### 3D Touch
+By implementing [3D Touch](https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/Adopting3DTouchOniPhone/), you can have users opening your app directly on some actions like `new tweet`, `search for tweets`, `get direction`, ...
+All you have to do is follow the documentation for `UIApplicationShortcutItem` [here](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplicationShortcutItem_class/index.html#//apple_ref/occ/cl/UIApplicationShortcutItem) and then:
+
+```objc
+- (void)application:(UIApplication * _Nonnull)application
+performActionForShortcutItem:(UIApplicationShortcutItem * _Nonnull)shortcutItem
+  completionHandler:(void (^ _Nonnull)(BOOL succeeded))completionHandler {
+    if ([shortcutItem.type isEqualToString:@"newTweet"]) {
+        // goto://home/newTweet
+    }
+}
+```
+
+### Search
+Using [WACoreDataSpotlight](https://github.com/Wasappli/WACoreDataSpotlight) for example (the samples uses `WAppRouting`), you can respond to `open app from search item` events.
+
+```objc
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler {
+    NSManagedObject *object = [self.mainIndexer objectFromUserActivity:userActivity];
+    
+    if ([object isKindOfClass:[Company class]]) {
+        [AppLink goTo:@"companies/%@", ((Company *)object).name];
+    }
+
+    return YES;
+} 
+```
 
 ## Special configuration consideration
 ### Custom container controller

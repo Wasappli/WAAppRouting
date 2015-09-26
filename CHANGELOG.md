@@ -1,3 +1,21 @@
+## [V0.0.4](https://github.com/Wasappli/WAAppRouting/releases/tag/0.0.4)
+
+### Fixes
+- If you provide an entity with a path you already registered using `registerAppRouteEntity:` on `WAAppRouteRegistrar`, then the registrar will ignore that entity.
+- Fixed an issue when passing a class on registration which does not exists. The assertion description was wrong.
+- Fixed an issue when reusing a navigation controller to place an entity with no previous one. It was simply pushing on stack, expected behavior is to reset the stack and place the controller.
+- Fixed an issue with URL and path escaping when you got for example `"name": "Ben & Jerry"`. `&` is now correctly escaped using `CFURLCreateStringByAddingPercentEscapes`
+- Fixed an issue when presenting a modal controller over a modal controller. For example for this path: `(...)/redeem{RedeemVC}!/signup{SignupVC}!`.
+- Fixed a memory leak on `WAAppLinkParameters`
+- Fixing README
+- Added some documentation about iOS 9:
+	- Search (CoreSpotlight) using [WACoreDataSpotlight](https://github.com/Wasappli/WACoreDataSpotlight) which automatically index CoreData
+	- 3D Touch released with iPhone 6S and iPhone 6+S
+	
+### Evolutions
+- `WAAppLinkParameters` now supports `NSCoding`. This is useful for state preservation and restoration!
+- Added an optional method on `WAAppRouterTargetControllerProtocol` to tell the controllers that the next controller has been presented or reloaded. `- (void)waappRoutingDidDisplayController:(UIViewController *)controller withAppLink:(WAAppLink *)appLink;`
+
 ## [V0.0.3](https://github.com/Wasappli/WAAppRouting/releases/tag/0.0.3)
 
 ### Fixes 

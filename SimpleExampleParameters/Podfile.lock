@@ -1,11 +1,11 @@
 PODS:
   - MOOMaskedIconView (0.1.0)
   - PPHelpMe (1.0.2)
-  - PureLayout (3.0.0)
+  - PureLayout (3.0.1)
   - RZNotificationView (1.1.7):
     - MOOMaskedIconView (>= 0.1.0)
     - PPHelpMe (>= 1.0.0)
-  - WAAppRouting (0.0.3)
+  - WAAppRouting (0.0.4)
 
 DEPENDENCIES:
   - PureLayout
@@ -19,8 +19,8 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   MOOMaskedIconView: 42f22374cd15e81e65a1d67963374a961d94b909
   PPHelpMe: 243c40d2fad33ebdcc6b158c0db54893e0cc2d14
-  PureLayout: 270dfee2236f697ab1d5e2771c2e5c248495fa0d
+  PureLayout: f35f5384c9c4e4479df041dbe33ad7577b71ddfb
   RZNotificationView: 37b4a32e03a5f44a91ea76465f33313943a874d8
-  WAAppRouting: 1a16303bb2502b64e5f4fe287a19339cb40bf3dc
+  WAAppRouting: 64dde97adefda2e9293b5ab49e0568be5d76b53c
 
 COCOAPODS: 0.38.2
