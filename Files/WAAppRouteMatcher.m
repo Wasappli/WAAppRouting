@@ -18,23 +18,8 @@
     BOOL urlMatchesPattern = [self doesPathPattern:pathPattern
                                       matchesRoute:urlComponents.string];
     if (!urlMatchesPattern) {
-        // Try without the scheme
-        NSString *pathWithoutScheme = nil;
-        // Is the scheme is http or https, then do not use the host
-        // See documentation on Apple side:
-        // > The scheme of the webpageURL must be http or https. Any other scheme throws an exception.
-        
-        if ([urlComponents.scheme isEqualToString:@"http"] || [urlComponents.scheme isEqualToString:@"https"]) {
-            pathWithoutScheme = urlComponents.path;
-            // Remove the first slash
-            pathWithoutScheme = pathWithoutScheme.length > 1 ? [pathWithoutScheme substringFromIndex:1] : pathWithoutScheme;
-        }
-        else {
-            pathWithoutScheme = [urlComponents.host stringByAppendingPathComponent:urlComponents.path];
-        }
-        
         urlMatchesPattern = [self doesPathPattern:pathPattern
-                                     matchesRoute:pathWithoutScheme];
+                                     matchesRoute:[self pathWithoutScheme:url]];
     }
     
     return urlMatchesPattern;
@@ -44,13 +29,7 @@
     WARoutePattern *pattern = [[WARoutePattern alloc] initWithPattern:pathPattern];
     NSDictionary *routeParameters = nil;
     
-    NSString *urlStringWithoutScheme = [[url absoluteString] stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@://", url.scheme]
-                                                                                       withString:@""];
-    if (url.query) {
-        urlStringWithoutScheme = [urlStringWithoutScheme stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"?%@", url.query] withString:@""];
-    }
-    
-    routeParameters = [pattern extractParametersFromRoute:urlStringWithoutScheme];
+    routeParameters = [pattern extractParametersFromRoute:[self pathWithoutScheme:url]];
     
     return routeParameters;
 }
@@ -60,6 +39,26 @@
 - (BOOL)doesPathPattern:(NSString *)pathPattern matchesRoute:(NSString *)route {
     WARoutePattern* pattern = [[WARoutePattern alloc] initWithPattern:pathPattern];
     return [pattern matchesRoute:route];
+}
+
+- (NSString *)pathWithoutScheme:(NSURL *)url
+{
+    NSString *pathWithoutScheme = nil;
+
+    // Is the scheme is http or https, then do not use the host
+    // See documentation on Apple side:
+    // > The scheme of the webpageURL must be http or https. Any other scheme throws an exception.
+
+    if ([url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"]) {
+        pathWithoutScheme = url.path;
+        // Remove the first slash
+        pathWithoutScheme = pathWithoutScheme.length > 1 ? [pathWithoutScheme substringFromIndex:1] : pathWithoutScheme;
+    }
+    else {
+        pathWithoutScheme = [url.host stringByAppendingPathComponent:url.path];
+    }
+
+    return pathWithoutScheme;
 }
 
 @end
