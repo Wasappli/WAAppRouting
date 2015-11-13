@@ -1,3 +1,9 @@
+## [V0.0.5](https://github.com/Wasappli/WAAppRouting/releases/tag/0.0.5)
+### Fixes
+- Fix route parameters extraction when URL scheme is http(s) by [enfoiro](https://github.com/enfoiro)
+- Fixed an issue with query parameters as numbers others than long values
+
+
 ## [V0.0.4](https://github.com/Wasappli/WAAppRouting/releases/tag/0.0.4)
 
 ### Fixes
