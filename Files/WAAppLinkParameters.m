@@ -19,6 +19,8 @@
 @property (nonatomic, strong) NSDictionary *mappingKeyProperty;
 @property (nonatomic, strong) NSDictionary *mappingPropertyClass;
 
+@property (nonatomic, strong) NSNumberFormatter *numberFormatter;
+
 @end
 
 @implementation WAAppLinkParameters
@@ -118,7 +120,10 @@
         
         // If the destination is a number and the origin a string, then move to number.
         if (propertyClass == [NSNumber class] && [value isKindOfClass:[NSString class]]) {
-            value = @([value longLongValue]);
+            if (!self.numberFormatter) {
+                self.numberFormatter = [[NSNumberFormatter alloc] init];
+            }
+            value = [self.numberFormatter numberFromString:value];
         }
         
         // Decode if this is a string
