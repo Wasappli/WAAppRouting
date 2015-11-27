@@ -19,7 +19,8 @@
 @property (nonatomic, strong) NSDictionary *mappingKeyProperty;
 @property (nonatomic, strong) NSDictionary *mappingPropertyClass;
 
-@property (nonatomic, strong) NSNumberFormatter *numberFormatter;
+@property (nonatomic, strong) NSNumberFormatter *numberFormatterForCurrentLocale;
+@property (nonatomic, strong) NSNumberFormatter *numberFormatterForEnglishLocale;
 
 @end
 
@@ -120,10 +121,26 @@
         
         // If the destination is a number and the origin a string, then move to number.
         if (propertyClass == [NSNumber class] && [value isKindOfClass:[NSString class]]) {
-            if (!self.numberFormatter) {
-                self.numberFormatter = [[NSNumberFormatter alloc] init];
+            // Start with current locale
+            if (!self.numberFormatterForCurrentLocale) {
+                self.numberFormatterForCurrentLocale = [[NSNumberFormatter alloc] init];
             }
-            value = [self.numberFormatter numberFromString:value];
+            NSNumber *newValue = [self.numberFormatterForCurrentLocale numberFromString:value];
+            // If no value, try the default. This can be the case for a coordinate parameter, for example 34.98 which should be writter as 34,98 in current locale.
+            
+            if (!newValue) {
+                // Try with english locale
+                if (!self.numberFormatterForEnglishLocale) {
+                    self.numberFormatterForEnglishLocale        = [[NSNumberFormatter alloc] init];
+                    self.numberFormatterForEnglishLocale.locale = [NSLocale localeWithLocaleIdentifier:@"en_US"];
+                }
+                
+                newValue = [self.numberFormatterForEnglishLocale numberFromString:value];
+                
+            }
+            
+            NSParameterAssert(newValue);
+            value = [newValue copy];
         }
         
         // Decode if this is a string
