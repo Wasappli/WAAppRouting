@@ -12,15 +12,8 @@
 @implementation WAAppRouteMatcher
 
 - (BOOL)matchesURL:(NSURL *)url fromPathPattern:(NSString *)pathPattern {
-    // Remove the parameters
-    NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:NO];
-    urlComponents.query = nil;
     BOOL urlMatchesPattern = [self doesPathPattern:pathPattern
-                                      matchesRoute:urlComponents.string];
-    if (!urlMatchesPattern) {
-        urlMatchesPattern = [self doesPathPattern:pathPattern
-                                     matchesRoute:[self pathWithoutScheme:url]];
-    }
+                                      matchesRoute:[self pathWithoutScheme:url]];
     
     return urlMatchesPattern;
 }
