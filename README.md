@@ -59,12 +59,12 @@ So you might recognize some concepts of the two libraries, especially in the rou
 - The route matching works on `:itemID` and uses `*` as the wildcard character.
 
 ## Installation
-### Cocoapods
-Use Cocoapods, this is the easiest way to install the router.
+### CocoaPods
+Use CocoaPods, this is the easiest way to install the router.
 
 `pod 'WAAppRouting'`
 
-If you want to link `WAAppRouting` into an iOS app extension (or a shared framework that is linked to an app extension), you'll need to ensure that the `WA_APP_EXTENSION` flag is set when you compile the framework.  To do so using Cocoapods, add this to your `Podfile`:
+If you want to link `WAAppRouting` into an iOS app extension (or a shared framework that is linked to an app extension), you'll need to ensure that the `WA_APP_EXTENSION` flag is set when you compile the framework.  To do so using CocoaPods, add this to your `Podfile`:
 
 ```ruby
 post_install do |installer|
