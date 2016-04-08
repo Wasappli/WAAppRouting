@@ -198,13 +198,8 @@
         }
         
         if (entity.targetControllerClass == targetClass && targetClass) {
-            WAAssert(!foundedEntity || foundedEntity && !entity.sourceControllerClass, ([NSString stringWithFormat:@"Error: you cannot have two entities with the same target class (%@) if the source is not nil. Cannot resolve the path.", NSStringFromClass(entity.targetControllerClass)]));
             if (!foundedEntity) {
                 foundedEntity = entity;
-                // If we are not on debug, continue to report double target violation
-#ifndef DEBUG
-                break;
-#endif
             }
         }
     }
