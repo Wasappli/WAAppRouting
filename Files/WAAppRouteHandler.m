@@ -251,17 +251,18 @@
                    preferModalPresentation:entity.preferModalPresentation
                                   animated:animated];
     
-    // Configure it
-    [self configureController:targetViewController
-                   fromEntity:entity
-                      appLink:appLink];
-    
-    // Tell it that it displayed a new controller
-    if ([(id<WAAppRouterTargetControllerProtocol>)fromController respondsToSelector:@selector(waappRoutingDidDisplayController:withAppLink:)]) {
-        [(id<WAAppRouterTargetControllerProtocol>)fromController waappRoutingDidDisplayController:targetViewController
-                                                                                      withAppLink:appLink];
+    if (targetViewController) {
+        // Configure it
+        [self configureController:targetViewController
+                       fromEntity:entity
+                          appLink:appLink];
+        
+        // Tell it that it displayed a new controller
+        if ([(id<WAAppRouterTargetControllerProtocol>)fromController respondsToSelector:@selector(waappRoutingDidDisplayController:withAppLink:)]) {
+            [(id<WAAppRouterTargetControllerProtocol>)fromController waappRoutingDidDisplayController:targetViewController
+                                                                                          withAppLink:appLink];
+        }
     }
-    
     return targetViewController;
 }
 
@@ -332,10 +333,12 @@
         else {
             // Allocate the controller
             controllerToReturn = [[targetViewControllerClass alloc] init];
-            // Allocate a navigation controller
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:(UIViewController *)controllerToReturn];
-            // Present
-            [presentingViewController presentViewController:navController animated:animated completion:NULL];
+            if (controllerToReturn) {
+                // Allocate a navigation controller
+                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:(UIViewController *)controllerToReturn];
+                // Present
+                [presentingViewController presentViewController:navController animated:animated completion:NULL];
+            }
         }
     }
     else if ([navigationController isKindOfClass:[UINavigationController class]]) {
@@ -360,7 +363,7 @@
     // Try to find it in the current stack
     UIViewController *controllerToReturn = (UIViewController *)[navigationController waapp_popToFirstControllerOfClass:targetViewControllerClass animated:animated];
     // Not found? Then allocate it
-    if (!controllerToReturn) {
+    if (!controllerToReturn && targetViewControllerClass) {
         controllerToReturn = [[targetViewControllerClass alloc] init];
         [navigationController pushViewController:controllerToReturn animated:animated];
     }

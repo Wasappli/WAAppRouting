@@ -81,16 +81,28 @@
         // Check if we have {} enclosure
         NSRange startBraceCharacter = [pathComponent rangeOfString:@"{"];
         NSRange endBraceCharacter   = [pathComponent rangeOfString:@"}"];
-        WAAssert(startBraceCharacter.location != NSNotFound && endBraceCharacter.location != NSNotFound, ([NSString stringWithFormat:@"You need to have the class enclosed between {ClassName} on %@", pathComponent]));
+        WAAssert((startBraceCharacter.location != NSNotFound && endBraceCharacter.location != NSNotFound)
+                 ||
+                 (startBraceCharacter.location == NSNotFound && endBraceCharacter.location == NSNotFound), ([NSString stringWithFormat:@"You need to have the class enclosed between {ClassName} on %@", pathComponent]));
         
         // Extract infos
-        NSString *urlPathComponent = [pathComponent substringToIndex:startBraceCharacter.location];
-        NSString *className        = [pathComponent substringWithRange:NSMakeRange(startBraceCharacter.location + 1, endBraceCharacter.location - (startBraceCharacter.location + 1))];
-        Class targetClass          = NSClassFromString(className);
-        BOOL isModal               = [pathComponent hasSuffix:@"!"];
-
-        // Check class name existance
-        WAAssert(targetClass != Nil, ([NSString stringWithFormat:@"The class %@ does not seems to be existing", className]));
+        NSString *urlPathComponent = nil;
+        BOOL isModal               = NO;
+        Class targetClass          = nil;
+        
+        if (startBraceCharacter.location != NSNotFound && endBraceCharacter.location != NSNotFound) {
+            urlPathComponent    = [pathComponent substringToIndex:startBraceCharacter.location];
+            NSString *className = [pathComponent substringWithRange:NSMakeRange(startBraceCharacter.location + 1, endBraceCharacter.location - (startBraceCharacter.location + 1))];
+            targetClass         = NSClassFromString(className);
+            isModal             = [pathComponent hasSuffix:@"!"];
+            
+            // Check class name existance
+            WAAssert(targetClass != Nil, ([NSString stringWithFormat:@"The class %@ does not seems to be existing", className]));
+        } else {
+            urlPathComponent = pathComponent;
+        }
+        
+        
         
         if (!currentPath) {
             currentPath = [NSMutableString stringWithString:urlPathComponent];
@@ -120,7 +132,9 @@
                                                             allowedParameters:allowedParameters];
         [self registerAppRouteEntity:routeEntity];
         
-        previousClass = targetClass;
+        if (targetClass) {
+            previousClass = targetClass;
+        }
     }
 }
 
@@ -182,8 +196,8 @@
         if ([entity isKindOfClass:NSClassFromString(@"NSBlock")]) {
             continue;
         }
-             
-        if (entity.targetControllerClass == targetClass) {
+        
+        if (entity.targetControllerClass == targetClass && targetClass) {
             WAAssert(!foundedEntity || foundedEntity && !entity.sourceControllerClass, ([NSString stringWithFormat:@"Error: you cannot have two entities with the same target class (%@) if the source is not nil. Cannot resolve the path.", NSStringFromClass(entity.targetControllerClass)]));
             if (!foundedEntity) {
                 foundedEntity = entity;

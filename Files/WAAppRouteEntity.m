@@ -20,7 +20,7 @@
     WAAppRouterClassAssertion(name, NSString);
     WAAppRouterClassAssertion(path, NSString);
     WAAppRouterParameterAssert(!sourceControllerClass || (class_isMetaClass(object_getClass(sourceControllerClass)) && [sourceControllerClass conformsToProtocol:@protocol(WAAppRouterTargetControllerProtocol)] && [sourceControllerClass isSubclassOfClass:[UIViewController class]]));
-    WAAppRouterParameterAssert(class_isMetaClass(object_getClass(targetControllerClass)) && [targetControllerClass conformsToProtocol:@protocol(WAAppRouterTargetControllerProtocol)] && [targetControllerClass isSubclassOfClass:[UIViewController class]]);
+    WAAppRouterParameterAssert(!targetControllerClass || class_isMetaClass(object_getClass(targetControllerClass)) && [targetControllerClass conformsToProtocol:@protocol(WAAppRouterTargetControllerProtocol)] && [targetControllerClass isSubclassOfClass:[UIViewController class]]);
     WAAppRouterClassAssertionIfExisting(presentingController, UIViewController);
     WAAppRouterParameterAssert(!presentingController && prefersModalPresentation || presentingController && !prefersModalPresentation);
     WAAppRouterClassAssertionIfExisting(allowedParameters, NSArray);
