@@ -16,6 +16,9 @@
  */
 @interface WAAppRouter : NSObject
 
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
+
 /**
  *  Init the router
  *

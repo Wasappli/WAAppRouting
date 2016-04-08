@@ -15,6 +15,9 @@
  */
 @interface WAAppRouteHandler : NSObject <WAAppRouteHandlerProtocol>
 
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
+
 /**
  *  Init with a route registrar. The registrar contains all the `WAAppRouteEntity` and is necessary for retrieving the entity stack.
  *

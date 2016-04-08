@@ -13,6 +13,9 @@
  */
 @interface WARoutePattern : NSObject
 
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
+
 /**
  *  Init with a pattern like 'list/:itemID/extra' or 'list/_*_/extra' (whithout the '_')
  *

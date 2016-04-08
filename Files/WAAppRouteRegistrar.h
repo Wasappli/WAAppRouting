@@ -19,6 +19,9 @@ typedef void (^WAAppRouteHandlerBlock)(WAAppLink *appLink);
  */
 @interface WAAppRouteRegistrar : NSObject
 
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
+
 /**
  *  Initialize the registrar with a route matcher
  *
